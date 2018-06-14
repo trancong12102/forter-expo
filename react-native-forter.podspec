@@ -12,6 +12,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => pkg["repository"]["url"] }
   s.source_files = 'ios/**/*.{h,m}'
   s.platform     = :ios, "8.0"
-  s.dependency 'ForterSDK', '~> 1.9.9'
+  # s.dependency 'ForterSDK', '~> 1.9.9'
   s.dependency 'React'
 end

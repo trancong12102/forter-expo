@@ -11,8 +11,8 @@ const ForterNavigationType = {
     SEARCH : "SEARCH", 
     CHECKOUT : "CHECKOUT", 
     CART : "CART", 
-    APP : "APP", 
-    HELP : "HELP"
+    HELP : "HELP",
+    APP : "APP"
 };
 
 const ForterActionType = {
@@ -40,12 +40,12 @@ const ForterActionType = {
 };
 
 const ForterAccountType = {
-    MERCHANT,
-    FACEBOOK,
-    GOOGLE,
-    TWITTER,
-    APPLE_IDFA,
-    OTHER
+    MERCHANT : "MERCHANT",
+    FACEBOOK : "FACEBOOK",
+    GOOGLE : "GOOGLE",
+    TWITTER : "TWITTER",
+    APPLE_IDFA : "APPLE_IDFA",
+    OTHER : "OTHER"
 };
 
 /**
@@ -131,8 +131,8 @@ forterSDK.setDevLogsEnabled = () => {
     return RNForter.setDevLogsEnabled();
 };
 
-forterSDK.getSDKVersionName = (callback) => {
-    return RNForter.getSDKVersionName(callback);
+forterSDK.getSDKVersionSignature = (callback) => {
+    return RNForter.getSDKVersionSignature(callback);
 };
 
 export { forterSDK, ForterNavigationType, ForterActionType, ForterAccountType };
