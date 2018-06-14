@@ -1,0 +1,30 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 27
+        versionCode 1
+        versionName "0.1.0"
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://maven.google.com" }
+    maven {
+        url "https://mobile-sdks.forter.com/android"
+        credentials {
+            username "forter-android-sdk"
+            password "HvYumAfjVQYQFyoGsmNAefGdR84Esqig"
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.facebook.react:react-native:+'
+    implementation 'com.forter.mobile:fortersdk:1.9.9@aar'
+}
