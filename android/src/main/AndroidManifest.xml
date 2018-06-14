@@ -1,3 +1,4 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.forter.mobile.reactnative">
+          <receiver android:name="com.forter.mobile.fortersdk.utils.AlarmReceiver" android:exported="false" />
 </manifest>
