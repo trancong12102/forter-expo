@@ -1,14 +1,14 @@
 
-## <a id="this-plugin-is-built-for"> This plugin is built for
+## This plugin is built for
 
 - Forter's iOS SDK
 - Forter's Android SDK
 
-## <a id="installation"> Installation
+## Installation
 Add the Forter dependency to your `package.json`
 `"react-native-forter": "git+https://forter-mobile-git:zvGKcVtDhkfj4asNekSn@bitbucket.org:forter-mobile/forter-react-plugin.git"`
 
-### <a id="installation_ios"> iOS
+### iOS
 
 
 1. Add the `ForterSDK` pod and the React Native pod to your `Podfile` and run `pod install`.
@@ -28,7 +28,7 @@ You must also have the React dependencies defined in the Podfile as described [h
 2. Run `pod install` (inside `ios` directory).
 
 
-### <a id="installation_android"> Android
+### Android
 
 ##### **android/app/build.gradle**
 
