@@ -44,11 +44,9 @@ RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
 }
 
 RCT_EXPORT_METHOD(getDeviceUniqueID:(RCTResponseSenderBlock)callback) {
-  callback(@[[NSNull null], [[[UIDevice currentDevice] identifierForVendor] UUIDString]]);
-}
-
-RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(syncGetDeviceUniqueID) {
-  return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    callback(@[[[[UIDevice currentDevice] identifierForVendor] UUIDString]]);
+  });
 }
 
 RCT_EXPORT_METHOD(setAccountIdentifier:(NSString*)accountId

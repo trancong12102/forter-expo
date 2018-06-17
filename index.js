@@ -66,10 +66,6 @@ forterSDK.getDeviceUniqueID = (callback) => {
     return RNForter.getDeviceUniqueID(callback);
 };
 
-forterSDK.syncGetDeviceUniqueID = () => {
-    return RNForter.syncGetDeviceUniqueID();
-};
-
 /**
  * Set the currently logged-in account ID
  * @param {String} accountUid 
