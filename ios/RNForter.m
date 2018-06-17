@@ -1,5 +1,9 @@
 #import "RNForter.h"
+#if __has_include(<ForterSDK/ForterSDK.h>) // from Pod
 #import <ForterSDK/ForterSDK.h>
+#else
+#import "ForterSDK.h"
+#endif
 
 
 
