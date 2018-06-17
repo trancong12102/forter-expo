@@ -1,7 +1,7 @@
 
 import { NativeModules } from 'react-native';
 
-const { RNForter } = NativeModules;
+const RNForter = NativeModules.RNForter;
 
 const forterSDK = {};
 
