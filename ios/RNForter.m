@@ -5,21 +5,21 @@
 #import "ForterSDK.h"
 #endif
 
-
-
-@interface RNForter()
-@end
-
 @implementation RNForter
+RCT_EXPORT_MODULE();
 
-@synthesize bridge = _bridge;
+- (id)init {
+    self = [super init];
+    if (self != nil) {
+        NSLog(@"[ForterSDK] Setting up an RNForter instance");
+    }
+    return self;
+}
+
 
 static NSString *const NO_SITE_ID_FOUND             = @"SiteID is empty or missing";
 static NSString *const NO_MOBILE_UID_FOUND          = @"MobileUID is empty or missing";
 static NSString *const SUCCESS                      = @"Success";
-
-RCT_EXPORT_MODULE()
-
 
 RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
                   mobileUid:(NSString*)mobileUid
@@ -45,6 +45,10 @@ RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
 
 RCT_EXPORT_METHOD(getDeviceUniqueID:(RCTResponseSenderBlock)callback) {
   callback(@[[NSNull null], [[[UIDevice currentDevice] identifierForVendor] UUIDString]]);
+}
+
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(syncGetDeviceUniqueID) {
+  return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
 }
 
 RCT_EXPORT_METHOD(setAccountIdentifier:(NSString*)accountId

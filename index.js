@@ -1,8 +1,7 @@
 
-import { NativeModules } from 'react-native';
+import {NativeModules} from 'react-native';
 
-const RNForter = NativeModules.RNForter;
-
+const {RNForter} = NativeModules;
 const forterSDK = {};
 
 const ForterNavigationType = {
@@ -56,7 +55,7 @@ const ForterAccountType = {
  * @param {*} errorC 
  */
 forterSDK.init = (siteId, mobileUid, successC, errorC) => {
-    return RNForter.initSDK(siteId, mobileUid, successC, errorC);
+    return RNForter.initSdk(siteId, mobileUid, successC, errorC);
 };
 
 /**
@@ -65,6 +64,10 @@ forterSDK.init = (siteId, mobileUid, successC, errorC) => {
  */
 forterSDK.getDeviceUniqueID = (callback) => {
     return RNForter.getDeviceUniqueID(callback);
+};
+
+forterSDK.syncGetDeviceUniqueID = () => {
+    return RNForter.syncGetDeviceUniqueID();
 };
 
 /**
