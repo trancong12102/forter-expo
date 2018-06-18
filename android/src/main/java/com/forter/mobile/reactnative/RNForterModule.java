@@ -84,7 +84,7 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
 
     @ReactMethod
     public void setAccountIdentifier(String accountIdentifier, String accountType) {
-        sdk().setAccountUID(getMatchingAccountIDType(accountType);, accountIdentifier);
+        sdk().setAccountUID(getMatchingAccountIDType(accountType), accountIdentifier);
     }
 
     @ReactMethod
