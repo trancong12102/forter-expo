@@ -84,13 +84,7 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
 
     @ReactMethod
     public void setAccountIdentifier(String accountIdentifier, String accountType) {
-        ForterAccountIDType type;
-        try {
-            type = ForterAccountIDType.valueOf(accountType);
-        } catch (IllegalArgumentException ex) {
-            type = ForterAccountIDType.OTHER;
-        }
-        sdk().setAccountUID(type, accountIdentifier);
+        sdk().setAccountUID(getMatchingAccountIDType(accountType);, accountIdentifier);
     }
 
     @ReactMethod
@@ -165,6 +159,23 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
             return TrackType.valueOf(type);
         } catch (IllegalArgumentException ex) {
             return TrackType.OTHER;
+        }
+    }
+
+    private ForterAccountIDType getMatchingAccountIDType(String type) {
+        switch (type) {
+            case "MERCHANT":
+                return ForterAccountIDType.MERCHANT_ACCOUNT_ID;
+            case "FACEBOOK":
+                return ForterAccountIDType.FACEBOOK_ID;
+            case "GOOGLE":
+                return ForterAccountIDType.GOOGLE_ID;
+            case "TWITTER":
+                return ForterAccountIDType.TWITTER_ID;
+            case "APPLE_IDFA":
+            case "OTHER":
+            default:
+                return ForterAccountIDType.OTHER;
         }
     }
 
