@@ -163,19 +163,17 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
     }
 
     private ForterAccountIDType getMatchingAccountIDType(String type) {
-        switch (type) {
-            case "MERCHANT":
-                return ForterAccountIDType.MERCHANT_ACCOUNT_ID;
-            case "FACEBOOK":
-                return ForterAccountIDType.FACEBOOK_ID;
-            case "GOOGLE":
-                return ForterAccountIDType.GOOGLE_ID;
-            case "TWITTER":
-                return ForterAccountIDType.TWITTER_ID;
-            case "APPLE_IDFA":
-            case "OTHER":
-            default:
-                return ForterAccountIDType.OTHER;
+        if (type.equals("MERCHANT")) {
+            return ForterAccountIDType.MERCHANT_ACCOUNT_ID;
+        } else if (type.equals("FACEBOOK")) {
+            return ForterAccountIDType.FACEBOOK_ID;
+        } else if (type.equals("GOOGLE")) {
+            return ForterAccountIDType.GOOGLE_ID;
+        } else if (type.equals("TWITTER")) {
+            return ForterAccountIDType.TWITTER_ID;
+        } else {
+        // "APPLE_IDFA" or  "OTHER"
+            return ForterAccountIDType.OTHER;
         }
     }
 
