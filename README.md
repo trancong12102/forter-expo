@@ -6,7 +6,7 @@
 
 ## Installation
 Add the Forter dependency to your `package.json`
-`"react-native-forter": "git+https://forter-mobile-git:zvGKcVtDhkfj4asNekSn@bitbucket.org:forter-mobile/forter-react-plugin.git"`
+`"react-native-forter": "git+https://forter-mobile-git:zvGKcVtDhkfj4asNekSn@bitbucket.org/forter-mobile/forter-react-plugin.git"`
 
 ### iOS
 
