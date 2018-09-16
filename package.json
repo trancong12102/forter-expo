@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://forter-mobile-git:zvGKcVtDhkfj4asNekSn@bitbucket.org:forter-mobile/forter-react-plugin.git"
+    "url": "git+https://forter-mobile-git:zvGKcVtDhkfj4asNekSn@bitbucket.org/forter-mobile/forter-react-plugin.git"
   },
   "author": "Or Polaczek, Tech Research @ Forter",
   "license": {
