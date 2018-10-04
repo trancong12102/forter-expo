@@ -2,18 +2,14 @@ package com.forter.mobile.reactnative;
 
 
 import android.app.Application;
-import android.location.Location;
 import android.os.Build;
 
-
-import com.forter.mobile.fortersdk.ForterSDK;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.forter.mobile.fortersdk.ForterSDK;
 import com.forter.mobile.fortersdk.integrationkit.ForterIntegrationUtils;
 import com.forter.mobile.fortersdk.interfaces.IForterSDK;
 import com.forter.mobile.fortersdk.models.ForterAccountIDType;
@@ -24,10 +20,9 @@ import com.forter.mobile.fortersdk.utils.SDKLogger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.forter.mobile.reactnative.RNForterConstants.*;
+import static com.forter.mobile.reactnative.RNForterConstants.NO_MOBILE_UID_FOUND;
+import static com.forter.mobile.reactnative.RNForterConstants.NO_SITE_ID_FOUND;
+import static com.forter.mobile.reactnative.RNForterConstants.SUCCESS;
 
 public class RNForterModule extends ReactContextBaseJavaModule  {
 
@@ -64,9 +59,11 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
             }
 
             sdk().init(this.application, siteId, mobileUid);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-            {
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                // RN Activity events already happened on launch before we got a chance to register
+                // lifecycle callbacks - mark as foreground or we might not get events!
+                sdk().getActivityLifecycleCallbacks().onActivityResumed(reactContext.getCurrentActivity());
                 this.application.registerActivityLifecycleCallbacks(sdk().getActivityLifecycleCallbacks());
             }
 
