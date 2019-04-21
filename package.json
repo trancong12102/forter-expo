@@ -1,6 +1,6 @@
 {
   "name": "react-native-forter",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "React Native bridge for the Forter Mobile SDK",
   "main": "index.js",
   "scripts": {
@@ -11,10 +11,7 @@
     "url": "git+https://forter-mobile-git:zvGKcVtDhkfj4asNekSn@bitbucket.org/forter-mobile/forter-react-plugin.git"
   },
   "author": "Or Polaczek, Tech Research @ Forter",
-  "license": {
-    "type": "MIT",
-    "url": "https://bitbucket.org/forter-mobile/forter-react-plugin/src/master/LICENSE"
-  },
+  "license": "MIT",
   "homepage": "https://bitbucket.org/forter-mobile/forter-react-plugin/src/master/README.md",
   "keywords": [
     "react-native",
