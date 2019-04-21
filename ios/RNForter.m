@@ -16,6 +16,10 @@ RCT_EXPORT_MODULE();
     return self;
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+    return YES;
+}
 
 static NSString *const NO_SITE_ID_FOUND             = @"SiteID is empty or missing";
 static NSString *const NO_MOBILE_UID_FOUND          = @"MobileUID is empty or missing";
