@@ -25,5 +25,5 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.forter.mobile:fortersdk:1.9.9@aar'
+    implementation 'com.forter.mobile:fortersdk:1.11.0@aar'
 }
