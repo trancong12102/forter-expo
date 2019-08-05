@@ -19,5 +19,10 @@
     "native",
     "forter",
     "fraud prevention"
-  ]
+  ],
+  "rnpm": {
+    "android": {
+      "packageInstance": "new RNForterPackage(MainApplication.this)"
+    }
+  }
 }
