@@ -53,7 +53,8 @@ project(':react-native-forter').projectDir = new File(rootProject.projectDir, '.
 ```
 
 
-##### **MainApplication.java**
+#### If you're using an older React Native without auto-generated PackageList:
+##### **MainApplication.java** -
 Add:
 
 
@@ -75,4 +76,5 @@ So `getPackages()` should look like:
       );
     }
 ```
+
 
