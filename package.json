@@ -20,6 +20,9 @@
     "forter",
     "fraud prevention"
   ],
+  "devDependencies": {
+     "react-native": "0.60.4"
+  },
   "rnpm": {
     "android": {
       "packageInstance": "new RNForterPackage(MainApplication.this)"
