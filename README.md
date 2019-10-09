@@ -11,6 +11,7 @@ This plugin is built for:
 ## Installation
 Add the Forter dependency to your `package.json`:
 
+
 ```json
 {
  "dependencies": {
@@ -19,13 +20,14 @@ Add the Forter dependency to your `package.json`:
        "react-native-forter": "git+https://forter-mobile-git:zvGKcVtDhkfj4asNekSn@bitbucket.org/forter-mobile/forter-react-plugin.git#v0.14"
   },
 }
-````
+```
 
 ### iOS specific implementation
 
 First add the `ForterSDK` pod and the React Native pod to `ios/Podfile`:
 
-``` podspec
+
+```podspec
 pod 'ForterSDK', :git => 'https://forter-mobile-git:zvGKcVtDhkfj4asNekSn@bitbucket.org/forter-mobile/forter-ios-sdk.git'
 pod 'react-native-forter', :path => '../node_modules/react-native-forter'
 ```
