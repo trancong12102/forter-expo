@@ -11,6 +11,7 @@
 #import <Foundation/Foundation.h>
 #import "FTRSDKPublicConstants.h"
 #import "FTRSDKConfiguration.h"
+#import "FTRSDKConfigurationKeys.h"
 
 #if FTR_SDK_UI_KIT_DEPENDENCY_ENABLED
 #import "FTRSDKApplicationDelegate.h"

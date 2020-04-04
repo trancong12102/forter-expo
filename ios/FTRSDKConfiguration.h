@@ -14,10 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 
  Forter SDK configuration class.
  
- @warning ** FOR ADVANCED USED ONLY **. Documentation will be provided upon request by the Forter team.
+ @warning ** FOR ADVANCED USE ONLY **. Documentation will be provided upon request by the Forter team.
  */
 @interface FTRSDKConfiguration : NSObject <NSCopying>
-
 
 #pragma mark - SDK IDs storage
 /** The Forter site ID (available in the Forter Portal) */
@@ -26,20 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, copy) NSString *currentAccountId;
 /** Current device UID as used by you. Please update using [ForterSDK setDeviceUniqueIdentifier:] */
 @property (nonatomic, nullable, copy) NSString *deviceUid;
-
-#pragma mark - Event buffering settings
-@property (nonatomic, assign) NSUInteger bufferMaxEvents;
-@property (nonatomic, assign) NSUInteger bufferMaxEventSizeBytes;
-@property (nonatomic, assign) NSUInteger eventMaxAgeSeconds;
-@property (nonatomic, assign) NSUInteger networkSubmitIntervalSeconds;
-@property (nonatomic, assign) NSUInteger networkMaxRetries;
-@property (nonatomic, assign) NSUInteger networkInitialSocketTimeout;
-@property (nonatomic, assign) NSUInteger networkBackoffMultiplier;
-@property (nonatomic, assign) NSUInteger eventCacheForSeconds;
-@property (nonatomic, assign) BOOL eventCachingEnabled;
-
-/** This value is `FALSE` by default. Please consult with Forter's mobile team if you wish to change it's value. */
-@property (nonatomic, assign) BOOL networkExplicitBufferSubmission;
 
 #pragma mark - Provide information about the device
 /** Provide us information about whether the device is jailbroken if possible */
@@ -50,10 +35,28 @@ NS_ASSUME_NONNULL_BEGIN
 /** Provide us the User-Agent for this device */
 @property (nonatomic, nullable, copy) NSString *defaultUserAgent;
 
-#pragma mark MISC
-@property (nonatomic, assign) int logLevel;
-@property (nonatomic, assign) BOOL forceGETRequest;
-@property (nonatomic, assign) BOOL shouldCompress;
+#pragma SDK behaviour
+@property (nonatomic, assign) BOOL fetchRemoteConfiguration;
+@property (nonatomic, nullable, copy) NSMutableDictionary *configurationValues;
+
+
+/** Backward compatiability starts here: */
+@property (nonatomic, readonly) NSUInteger bufferMaxEvents;
+@property (nonatomic, readonly) NSUInteger bufferMaxEventSizeBytes;
+@property (nonatomic, readonly) NSUInteger eventMaxAgeSeconds;
+@property (nonatomic, readonly) NSUInteger networkSubmitIntervalSeconds;
+@property (nonatomic, readonly) NSString* baseApiUrl;
+@property (nonatomic, readonly) NSString* errorReportingUrl;
+
+@property (nonatomic, readonly) NSUInteger networkMaxRetries;
+@property (nonatomic, readonly) NSUInteger networkInitialSocketTimeout;
+@property (nonatomic, readonly) NSUInteger networkBackoffMultiplier;
+@property (nonatomic, readonly) NSUInteger eventCacheForSeconds;
+@property (nonatomic, readonly) BOOL eventCachingEnabled;
+@property (nonatomic, readonly) BOOL networkExplicitBufferSubmission;
+@property (nonatomic, readonly) int logLevel;
+@property (nonatomic, readonly) BOOL forceGETRequest;
+@property (nonatomic, readonly) BOOL shouldCompress;
 
 @end
 

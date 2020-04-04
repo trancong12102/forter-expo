@@ -1,5 +1,5 @@
 //
-//  FTRUIWebViewIntegration.h
+//  FTRWebViewIntegration.h
 //  ForterSDK
 //
 //  Created by Yoav on 25/07/2017.

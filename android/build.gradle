@@ -7,7 +7,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
-        versionName "0.1.6"
+        versionName "0.1.7"
     }
 }
 
@@ -25,5 +25,5 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.forter.mobile:fortersdk:1.11.0@aar'
+    implementation 'com.forter.mobile:fortersdk:1.12.0@aar'
 }
