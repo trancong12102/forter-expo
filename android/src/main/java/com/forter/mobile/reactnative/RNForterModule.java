@@ -15,7 +15,6 @@ import com.forter.mobile.fortersdk.interfaces.IForterSDK;
 import com.forter.mobile.fortersdk.models.ForterAccountIDType;
 import com.forter.mobile.fortersdk.models.NavigationType;
 import com.forter.mobile.fortersdk.models.TrackType;
-import com.forter.mobile.fortersdk.utils.SDKLogger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -135,7 +134,7 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
 
     @ReactMethod
     public void setDevLogsEnabled() {
-        SDKLogger.setDevLogsEnabled(true);
+        sdk().setDevLogsEnabled(true);
     }
 
     @ReactMethod
