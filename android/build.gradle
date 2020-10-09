@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 1
-        versionName "0.1.11"
+        versionCode 2
+        versionName "0.1.12"
     }
 }
 
@@ -25,5 +25,5 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.forter.mobile:fortersdk:2.4.5@aar'
+    implementation 'com.forter.mobile:fortersdk:2.4.6@aar'
 }
