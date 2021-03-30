@@ -1,6 +1,6 @@
 {
   "name": "react-native-forter",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "React Native bridge for the Forter Mobile SDK",
   "main": "index.js",
   "scripts": {
