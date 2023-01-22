@@ -17,7 +17,7 @@ Add the Forter dependency to your `package.json`:
  "dependencies": {
        "react": "16.8.6",
        "react-native": "0.60.4",
-       "react-native-forter": "git+https://forter-mobile-git:zvGKcVtDhkfj4asNekSn@bitbucket.org/forter-mobile/forter-react-plugin.git#v0.1.13"
+       "react-native-forter": "git+https://forter-mobile-git:zvGKcVtDhkfj4asNekSn@bitbucket.org/forter-mobile/forter-react-plugin.git#v0.1.15"
   },
 }
 ```
