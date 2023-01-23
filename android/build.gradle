@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 30
-        versionCode 3
-        versionName "0.1.13"
+        targetSdkVersion 31
+        versionCode 4
+        versionName "0.1.16"
     }
 }
 
@@ -25,5 +25,5 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.forter.mobile:fortersdk:2.4.11@aar'
+    implementation 'com.forter.mobile:fortersdk:2.4.13'
 }
