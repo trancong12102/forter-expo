@@ -58,7 +58,7 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
             }
 
             sdk().init(this.application, siteId, mobileUid);
-            
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                 // RN Activity events already happened on launch before we got a chance to register
                 // lifecycle callbacks - mark as foreground or we might not get events!
@@ -137,9 +137,10 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
         sdk().setDevLogsEnabled(true);
     }
 
+    @Deprecated
     @ReactMethod
     public void getSDKVersionSignature(Callback callback) {
-        callback.invoke(ForterSDK.BUILD_SIGNATURE);
+        callback.invoke("de844806cd013126370e6440aa3c2eb9");
     }
 
     private NavigationType getMatchingNavigationType(String type) {
