@@ -15,8 +15,6 @@ Add the Forter dependency to your `package.json`:
 ```json
 {
  "dependencies": {
-       "react": "16.8.6",
-       "react-native": "0.60.4",
        "react-native-forter": "git+https://forter-mobile-git:zvGKcVtDhkfj4asNekSn@bitbucket.org/forter-mobile/forter-react-plugin.git#v0.1.16"
   },
 }
@@ -45,7 +43,7 @@ include ':react-native-forter'
 project(':react-native-forter').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-forter/android')
 ```
 
-Add this to `android/app/build.gradle` to add Forter's private Maven repository:
+Add Forter's private Maven repository to your `android/app/build.gradle` or `settings.gradle` if you are using central declaration of repositories:
 ``` gradle
 repositories {
   maven {
@@ -66,7 +64,7 @@ Add the project to your dependencies
 ```gradle
 dependencies {
    ...
-   compile project(':react-native-forter')
+   implementation project(':react-native-forter')
 }
 ```
 
