@@ -6,11 +6,15 @@ import android.os.Build;
 import android.telecom.Call;
 import android.telephony.TelephonyCallback;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.forter.mobile.fortersdk.ForterSDK;
 import com.forter.mobile.fortersdk.integrationkit.ForterIntegrationUtils;
 import com.forter.mobile.fortersdk.integrationkit.ForterTokenListener;
@@ -25,6 +29,8 @@ import org.json.JSONObject;
 import static com.forter.mobile.reactnative.RNForterConstants.NO_MOBILE_UID_FOUND;
 import static com.forter.mobile.reactnative.RNForterConstants.NO_SITE_ID_FOUND;
 import static com.forter.mobile.reactnative.RNForterConstants.SUCCESS;
+
+import androidx.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
 
@@ -63,6 +69,15 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
                 return;
             }
 
+            sdk().registerForterTokenListener(new ForterTokenListener() {
+                @Override
+                public void onForterTokenUpdate(String forterMobileUID) {
+                    WritableMap params = Arguments.createMap();
+                    params.putString("forterMobileUID", forterMobileUID);
+                    sendEvent(reactContext, RNForterConstants.FORTER_TOKEN_UPDATE, params);
+                }
+            });
+
             sdk().init(this.application, siteId, mobileUid);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -78,26 +93,6 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
             errorCallback.invoke(e.getMessage());
         }
     }
-
-    @ReactMethod
-    public void registerForterTokenListener(Callback callback) {
-        listener = new ForterTokenListener() {
-            @Override
-            public void onForterTokenUpdate(String forterMobileUID) {
-                callback.invoke(forterMobileUID);
-            }
-        };
-
-        sdk().registerForterTokenListener(listener);
-    }
-
-    @ReactMethod
-    public void unregisterForterTokenListener() {
-        if (listener != null) {
-            sdk().unregisterForterTokenListener(listener);
-        }
-    }
-
     @ReactMethod
     public void getDeviceUniqueID(Callback callback) {
         callback.invoke(ForterIntegrationUtils.getDeviceUID(this.application));
@@ -198,6 +193,14 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
         // "APPLE_IDFA" or  "OTHER"
             return ForterAccountIDType.OTHER;
         }
+    }
+
+    private void sendEvent(ReactContext reactContext,
+                           String eventName,
+                           @Nullable WritableMap params) {
+        reactContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName, params);
     }
 
     private IForterSDK sdk() {

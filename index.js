@@ -1,5 +1,5 @@
 
-import {NativeModules} from 'react-native';
+import {NativeEventEmitter, NativeModules} from 'react-native';
 
 const {RNForter} = NativeModules;
 const forterSDK = {};
@@ -59,11 +59,9 @@ forterSDK.init = (siteId, mobileUid, successC, errorC) => {
 };
 
 forterSDK.registerForterTokenListener = (callback) => {
-    return RNForter.registerForterTokenListener(callback)
-}
-
-forterSDK.unregisterForterTokenListener = () => {
-    return RNForter.registerForterTokenListener()
+    return new NativeEventEmitter(RNForter).addListener("ForterTokenUpdate", event => {
+        callback(event.forterMobileUID)
+    })
 }
 
 /**
