@@ -39,11 +39,13 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
     final private ReactApplicationContext reactContext;
     final private Application application;
 
+    final private ForterTokenListener listener;
+
     public RNForterModule(ReactApplicationContext reactContext, Application application) {
         super(reactContext);
         this.reactContext = reactContext;
         this.application = application;
-        ForterTokenListener listener = new ForterTokenListener() {
+        this.listener = new ForterTokenListener() {
             @Override
             public void onForterTokenUpdate(String forterMobileUID) {
                 WritableMap params = Arguments.createMap();
@@ -51,8 +53,6 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
                 sendEvent(reactContext, RNForterConstants.FORTER_TOKEN_UPDATE, params);
             }
         };
-
-        sdk().registerForterTokenListener(listener);
     }
 
     @Override
@@ -77,6 +77,7 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
                 return;
             }
 
+            sdk().registerForterTokenListener(listener);
             sdk().init(this.application, siteId, mobileUid);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -150,6 +151,11 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
         }
 
         sdk().trackAction(TrackType.OTHER, data);
+    }
+
+    @Override
+    public void onCatalystInstanceDestroy() {
+        sdk().unregisterForterTokenListener(listener);
     }
 
     @ReactMethod
