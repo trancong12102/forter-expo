@@ -36,15 +36,23 @@ import java.lang.ref.WeakReference;
 
 public class RNForterModule extends ReactContextBaseJavaModule  {
 
-    private ReactApplicationContext reactContext;
-    private Application application;
-
-    private ForterTokenListener listener;
+    final private ReactApplicationContext reactContext;
+    final private Application application;
 
     public RNForterModule(ReactApplicationContext reactContext, Application application) {
         super(reactContext);
         this.reactContext = reactContext;
         this.application = application;
+        ForterTokenListener listener = new ForterTokenListener() {
+            @Override
+            public void onForterTokenUpdate(String forterMobileUID) {
+                WritableMap params = Arguments.createMap();
+                params.putString("forterMobileUID", forterMobileUID);
+                sendEvent(reactContext, RNForterConstants.FORTER_TOKEN_UPDATE, params);
+            }
+        };
+
+        sdk().registerForterTokenListener(listener);
     }
 
     @Override
@@ -68,15 +76,6 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
                 errorCallback.invoke(new Exception(NO_MOBILE_UID_FOUND).getMessage());
                 return;
             }
-
-            sdk().registerForterTokenListener(new ForterTokenListener() {
-                @Override
-                public void onForterTokenUpdate(String forterMobileUID) {
-                    WritableMap params = Arguments.createMap();
-                    params.putString("forterMobileUID", forterMobileUID);
-                    sendEvent(reactContext, RNForterConstants.FORTER_TOKEN_UPDATE, params);
-                }
-            });
 
             sdk().init(this.application, siteId, mobileUid);
 
