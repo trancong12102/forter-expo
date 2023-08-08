@@ -59,15 +59,6 @@ forterSDK.init = (siteId, mobileUid, forterTokenC, successC, errorC) => {
     return RNForter.initSdk(siteId, mobileUid, forterTokenC, successC, errorC);
 };
 
-
-forterSDK.registerForterTokenListener = (callback) => {
-    return RNForter.registerForterTokenListener(callback)
-}
-
-forterSDK.unregisterForterTokenListener = () => {
-    return RNForter.registerForterTokenListener()
-}
-
 /**
  * Get the device's native unique ID
  * @param {*} callback
