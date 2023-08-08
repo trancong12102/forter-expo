@@ -5,6 +5,7 @@ import android.app.Application;
 import android.os.Build;
 import android.telecom.Call;
 import android.telephony.TelephonyCallback;
+import android.util.Log;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -33,8 +34,6 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
     private ReactApplicationContext reactContext;
     private Application application;
 
-    private WeakReference<ForterTokenListener> listener;
-
     public RNForterModule(ReactApplicationContext reactContext, Application application) {
         super(reactContext);
         this.reactContext = reactContext;
@@ -50,6 +49,7 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
     public void initSdk(
             String siteId,
             String mobileUid,
+            Callback forterTokenCallback,
             Callback successCallback,
             Callback errorCallback
             ) {
@@ -62,6 +62,14 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
                 errorCallback.invoke(new Exception(NO_MOBILE_UID_FOUND).getMessage());
                 return;
             }
+
+            sdk().registerForterTokenListener(new ForterTokenListener() {
+                @Override
+                public void onForterTokenUpdate(String forterMobileUID) {
+                    Log.d("ForterSDK", "onForterTokenUpdate: " + forterMobileUID);
+                    forterTokenCallback.invoke(forterTokenCallback);
+                }
+            });
 
             sdk().init(this.application, siteId, mobileUid);
 
@@ -76,36 +84,6 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
             successCallback.invoke(SUCCESS);
         } catch (Exception e) {
             errorCallback.invoke(e.getMessage());
-        }
-    }
-
-    @ReactMethod
-    public void registerForterTokenListener(Callback callback) {
-        listener = new WeakReference<>(
-                new ForterTokenListener() {
-                    @Override
-                    public void onForterTokenUpdate(String forterMobileUID) {
-                        callback.invoke(forterMobileUID);
-                    }
-                }
-        );
-
-        ForterTokenListener forterTokenListener = listener.get();
-        if (forterTokenListener != null) {
-            sdk().registerForterTokenListener(forterTokenListener);
-        }
-    }
-
-    @ReactMethod
-    public void unregisterForterTokenLister() {
-        ForterTokenListener forterTokenListener = listener.get();
-        if (forterTokenListener != null) {
-            sdk().unregisterForterTokenListener(forterTokenListener);
-        }
-
-        if (listener != null) {
-            listener.clear();
-            listener = null;
         }
     }
 
