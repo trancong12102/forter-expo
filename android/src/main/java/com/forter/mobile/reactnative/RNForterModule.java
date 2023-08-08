@@ -5,6 +5,7 @@ import android.app.Application;
 import android.os.Build;
 import android.telecom.Call;
 import android.telephony.TelephonyCallback;
+import android.text.TextUtils;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -33,6 +34,7 @@ import static com.forter.mobile.reactnative.RNForterConstants.SUCCESS;
 import androidx.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
+import java.util.Objects;
 
 public class RNForterModule extends ReactContextBaseJavaModule  {
 
@@ -40,6 +42,7 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
     final private Application application;
 
     final private ForterTokenListener listener;
+    private String mForterMobileUID = "";
 
     public RNForterModule(ReactApplicationContext reactContext, Application application) {
         super(reactContext);
@@ -48,9 +51,12 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
         this.listener = new ForterTokenListener() {
             @Override
             public void onForterTokenUpdate(String forterMobileUID) {
-                WritableMap params = Arguments.createMap();
-                params.putString("forterMobileUID", forterMobileUID);
-                sendEvent(reactContext, RNForterConstants.FORTER_TOKEN_UPDATE, params);
+                if (!TextUtils.equals(mForterMobileUID, forterMobileUID)) {
+                    mForterMobileUID = forterMobileUID;
+                    WritableMap params = Arguments.createMap();
+                    params.putString("forterMobileUID", mForterMobileUID);
+                    sendEvent(reactContext, RNForterConstants.FORTER_TOKEN_UPDATE, params);
+                }
             }
         };
     }
