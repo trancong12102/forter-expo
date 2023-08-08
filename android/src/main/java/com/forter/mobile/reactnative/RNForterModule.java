@@ -3,6 +3,8 @@ package com.forter.mobile.reactnative;
 
 import android.app.Application;
 import android.os.Build;
+import android.telecom.Call;
+import android.telephony.TelephonyCallback;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -11,6 +13,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.forter.mobile.fortersdk.ForterSDK;
 import com.forter.mobile.fortersdk.integrationkit.ForterIntegrationUtils;
+import com.forter.mobile.fortersdk.integrationkit.ForterTokenListener;
 import com.forter.mobile.fortersdk.interfaces.IForterSDK;
 import com.forter.mobile.fortersdk.models.ForterAccountIDType;
 import com.forter.mobile.fortersdk.models.NavigationType;
@@ -23,10 +26,14 @@ import static com.forter.mobile.reactnative.RNForterConstants.NO_MOBILE_UID_FOUN
 import static com.forter.mobile.reactnative.RNForterConstants.NO_SITE_ID_FOUND;
 import static com.forter.mobile.reactnative.RNForterConstants.SUCCESS;
 
+import java.lang.ref.WeakReference;
+
 public class RNForterModule extends ReactContextBaseJavaModule  {
 
     private ReactApplicationContext reactContext;
     private Application application;
+
+    private WeakReference<ForterTokenListener> listener;
 
     public RNForterModule(ReactApplicationContext reactContext, Application application) {
         super(reactContext);
@@ -48,7 +55,6 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
             ) {
 
         try {
-
             if (siteId == null || siteId.isEmpty()) {
                 errorCallback.invoke(new Exception(NO_SITE_ID_FOUND).getMessage());
                 return;
@@ -71,6 +77,34 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
         } catch (Exception e) {
             errorCallback.invoke(e.getMessage());
         }
+    }
+
+    @ReactMethod
+    public void registerForterTokenListener(Callback callback) {
+        listener = new WeakReference<>(
+                new ForterTokenListener() {
+                    @Override
+                    public void onForterTokenUpdate(String forterMobileUID) {
+                        callback.invoke(forterMobileUID);
+                    }
+                }
+        );
+
+        ForterTokenListener forterTokenListener = listener.get();
+        if (forterTokenListener != null) {
+            sdk().registerForterTokenListener(forterTokenListener);
+        }
+    }
+
+    @ReactMethod
+    public void unregisterForterTokenLister() {
+        ForterTokenListener forterTokenListener = listener.get();
+        if (forterTokenListener != null) {
+            sdk().unregisterForterTokenListener(forterTokenListener);
+        }
+
+        listener.clear();
+        listener = null;
     }
 
     @ReactMethod
@@ -129,6 +163,7 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
         } catch (JSONException e) {
             return;
         }
+
         sdk().trackAction(TrackType.OTHER, data);
     }
 
