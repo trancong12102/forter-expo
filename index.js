@@ -51,13 +51,20 @@ const ForterAccountType = {
  * Start the Forter SDK
  * @param {String} siteId
  * @param {String} mobileUid
- * @param {*} forterTokenC
  * @param {*} successC
  * @param {*} errorC
  */
-forterSDK.init = (siteId, mobileUid, forterTokenC, successC, errorC) => {
-    return RNForter.initSdk(siteId, mobileUid, forterTokenC, successC, errorC);
+forterSDK.init = (siteId, mobileUid, successC, errorC) => {
+    return RNForter.initSdk(siteId, mobileUid, successC, errorC);
 };
+
+forterSDK.registerForterTokenListener = (callback) => {
+    return RNForter.registerForterTokenListener(callback)
+}
+
+forterSDK.unregisterForterTokenListener = () => {
+    return RNForter.registerForterTokenListener()
+}
 
 /**
  * Get the device's native unique ID
