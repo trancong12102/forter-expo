@@ -59,10 +59,10 @@ forterSDK.init = (siteId, mobileUid, successC, errorC) => {
 };
 
 forterSDK.registerForterTokenListener = (callback) => {
-    const emitter =  new NativeEventEmitter(RNForter)
-    emitter.addListener("ForterTokenUpdate", event => {
-        callback(event.forterMobileUID)
-    })
+    // const emitter =  new NativeEventEmitter(RNForter)
+    // emitter.addListener("ForterTokenUpdate", event => {
+    //     callback(event.forterMobileUID)
+    // })
 }
 
 /**
