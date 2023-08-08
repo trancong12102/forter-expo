@@ -103,8 +103,10 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
             sdk().unregisterForterTokenListener(forterTokenListener);
         }
 
-        listener.clear();
-        listener = null;
+        if (listener != null) {
+            listener.clear();
+            listener = null;
+        }
     }
 
     @ReactMethod
