@@ -66,7 +66,6 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
             sdk().registerForterTokenListener(new ForterTokenListener() {
                 @Override
                 public void onForterTokenUpdate(String forterMobileUID) {
-                    Log.d("ForterSDK", "onForterTokenUpdate: " + forterMobileUID);
                     forterTokenCallback.invoke(forterMobileUID);
                 }
             });
