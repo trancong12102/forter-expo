@@ -3,6 +3,7 @@ import {NativeEventEmitter, NativeModules} from 'react-native';
 
 const {RNForter} = NativeModules;
 const emitter =  new NativeEventEmitter(RNForter)
+let forterTokenUpdateSubscription;
 const forterSDK = {};
 
 const ForterNavigationType = {
@@ -60,7 +61,8 @@ forterSDK.init = (siteId, mobileUid, successC, errorC) => {
 };
 
 forterSDK.registerForterTokenListener = (callback) => {
-    return emitter.addListener("ForterTokenUpdate", event => {
+    emitter.removeSubscription(forterTokenUpdateSubscription)
+    forterTokenUpdateSubscription =  emitter.addListener("ForterTokenUpdate", event => {
         callback(event.forterMobileUID)
     })
 }
