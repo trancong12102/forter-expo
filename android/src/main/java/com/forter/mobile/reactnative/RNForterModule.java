@@ -6,6 +6,7 @@ import android.os.Build;
 import android.telecom.Call;
 import android.telephony.TelephonyCallback;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -55,7 +56,7 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
                     mForterMobileUID = forterMobileUID;
                     WritableMap params = Arguments.createMap();
                     params.putString("forterMobileUID", mForterMobileUID);
-                    sendEvent(reactContext, RNForterConstants.FORTER_TOKEN_UPDATE, params);
+                    RNUtil.emitEvent(reactContext, RNForterConstants.FORTER_TOKEN_UPDATE, params);
                 }
             }
         };
@@ -75,6 +76,7 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
             ) {
 
         try {
+            Log.d("RNForterModule", "initSDK");
             if (siteId == null || siteId.isEmpty()) {
                 errorCallback.invoke(new Exception(NO_SITE_ID_FOUND).getMessage());
                 return;
@@ -204,14 +206,6 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
         // "APPLE_IDFA" or  "OTHER"
             return ForterAccountIDType.OTHER;
         }
-    }
-
-    private void sendEvent(ReactContext reactContext,
-                           String eventName,
-                           @Nullable WritableMap params) {
-        reactContext
-                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(eventName, params);
     }
 
     @ReactMethod
