@@ -11,17 +11,9 @@
 #define FTR_SDK_VERSION_STRING_NAME @"2.2.3"
 #define FTR_SDK_VERSION_STRING_BUILD @"67"
 #define FTR_SDK_VERSION_SIGNATURE @"073b6e483f23bbbcdf722ad476c8b6e3"
+#define FTR_SDK_UI_KIT_DEPENDENCY_ENABLED 1
 
-#define FTR_SDK_LOG_LEVEL_OFF 0
-#define FTR_SDK_LOG_LEVEL_ERROR 1
-#define FTR_SDK_LOG_LEVEL_WARN 2
-#define FTR_SDK_LOG_LEVEL_DEBUG 3
-#define FTR_SDK_LOG_LEVEL_INFO 4
-#define FTR_SDK_LOG_LEVEL_VERBOSE 5
-
-#define FTR_SDK_UI_KIT_DEPENDENCY_ENABLED 1 
-
-/** 
+/**
  Navigation type to be used when tracking navigation using [ForterSDK trackNavigation:withType:]
  */
 typedef NS_ENUM(NSUInteger, FTRSDKNavigationType) {

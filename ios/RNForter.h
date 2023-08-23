@@ -5,6 +5,12 @@
 #import "RCTBridgeModule.h"
 #endif
 
+#if __has_include(<React/RCTEventEmitter.h>)
+#import <React/RCTEventEmitter.h>
+#else
+#import "RCTEventEmitter.h"
+#endif
+
 @interface RNForter : NSObject <RCTBridgeModule>
 
 @end

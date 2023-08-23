@@ -27,6 +27,8 @@ FOUNDATION_EXPORT const unsigned char ForterSDKVersionString[];
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class ForterTokenListener;
+
 /**
  ForterSDK - Simple and lightweight toolkit that lets you integrate with Forter.
  
@@ -57,7 +59,22 @@ NS_ASSUME_NONNULL_BEGIN
  @param siteId The Forter site id from the Forter Portal
  @return ForterSDK shared instance
  */
-+ (instancetype)setupWithSiteId:(NSString *)siteId;
++ (instancetype)setupWithDeviceUid:(NSString *)deviceUid siteId: (NSString *) siteId;
+/**
+ * Register for Forter token updates
+ * YOU MUST CALL THIS METHOD RIGHT AFTER INITIALIZING THE SDK
+ * It's highly recommended to register from application of your AppDelegate class
+ *
+ * @param listener The listener to register
+ */
++ (void) registerForterTokenListener: (ForterTokenListener*) listener;
+
+/**
+ * Unregister Forter token updates
+ *
+ * @param listener The listener to unregister
+ */
++ (void) unregisterForterTokenListener: (ForterTokenListener*) listener;
 
 /**
  Use this method to update the current FTRSDKConfiguration in the shared instance.
@@ -180,6 +197,7 @@ NS_ASSUME_NONNULL_BEGIN
  @warning Use this method only if your app uses a custom SDK configuration.
  */
 - (void)triggerSubmission;
+
 @end
 
 NS_ASSUME_NONNULL_END

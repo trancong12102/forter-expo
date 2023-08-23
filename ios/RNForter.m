@@ -5,6 +5,13 @@
 #import "ForterSDK.h"
 #endif
 
+#if __has_include(<ForterSDK/ForterSDK-Swift.h>) // from Pod
+#import <ForterSDK/ForterSDK-Swift.h>
+#else
+#import "ForterSDK-Swift.h"
+#endif
+
+
 @implementation RNForter
 RCT_EXPORT_MODULE();
 
@@ -25,6 +32,8 @@ static NSString *const NO_SITE_ID_FOUND             = @"SiteID is empty or missi
 static NSString *const NO_MOBILE_UID_FOUND          = @"MobileUID is empty or missing";
 static NSString *const SUCCESS                      = @"Success";
 
+BOOL isForterTokenRegistered = NO;
+
 RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
                   mobileUid:(NSString*)mobileUid
                   successCallback:(RCTResponseSenderBlock)successCallback
@@ -39,11 +48,19 @@ RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
   }
 
   if (error != nil) {
-    errorCallback(error);
+      errorCallback(error);
   } else {
-    [ForterSDK setupWithSiteId:siteId];
-    [[ForterSDK sharedInstance] setDeviceUniqueIdentifier:mobileUid];
-    successCallback(@[SUCCESS]);
+      [ForterSDK setupWithDeviceUid:mobileUid siteId:siteId]
+      if (!isForterTokenRegistered) {
+          ForterTokenListener * listener = [[ForterTokenListener alloc] initOnForterTokenUpdate:^(NSString* _Nullable forterMobileUID) {
+              [self sendEventWithName:@"forterTokenUpdate" body:@{@"forterMobileUID": forterMobileUID}];
+          }];
+          
+          [ForterSDK registerForterTokenListener: listener]
+          isForterTokenRegistered = YES;
+      }
+      [[ForterSDK sharedInstance] setDeviceUniqueIdentifier:mobileUid];
+      successCallback(@[SUCCESS]);
   }
 }
 
