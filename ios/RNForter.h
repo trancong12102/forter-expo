@@ -12,8 +12,7 @@
 #endif
 
 
-
-@interface RNForter : NSObject <RCTBridgeModule>
+@interface RNForter : RCTEventEmitter <RCTBridgeModule>
 
 @end
 

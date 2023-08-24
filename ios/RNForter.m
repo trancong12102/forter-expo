@@ -1,4 +1,5 @@
 #import "RNForter.h"
+
 #if __has_include(<ForterSDK/ForterSDK.h>) // from Pod
 #import <ForterSDK/ForterSDK.h>
 #else
@@ -32,7 +33,7 @@ static NSString *const NO_SITE_ID_FOUND             = @"SiteID is empty or missi
 static NSString *const NO_MOBILE_UID_FOUND          = @"MobileUID is empty or missing";
 static NSString *const SUCCESS                      = @"Success";
 
-BOOL isForterTokenRegistered = NO;
+static BOOL isForterTokenRegistered = NO;
 
 RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
                   mobileUid:(NSString*)mobileUid
@@ -54,10 +55,10 @@ RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
       if (!isForterTokenRegistered) {
           ForterTokenListener * listener = [ForterTokenListener alloc];
           [listener registerOnForterTokenUpdate: ^(NSString* _Nullable forterMobileUID) {
-              [self.bridge enqueueJSCall:@"RCTDeviceEventEmitter"
-                              method:@"emit"
-                                    args:@[@"forterTokenUpdate", @{@"forterMobileUID": forterMobileUID}]
-                              completion:NULL];
+              if ([self canSendEvents_DEPRECATED]) {
+                  //TODO: canSendEvents_DEPRECATED must be checked or app will crash on Hot Reloads, not sure why.
+                  [self sendEventWithName:@"forterTokenUpdate" body:@{@"forterMobileUID": forterMobileUID}];
+              }
           }];
           
           [ForterSDK registerForterTokenListener: listener];
@@ -204,5 +205,10 @@ RCT_EXPORT_METHOD(getSDKVersionSignature:(RCTResponseSenderBlock)callback) {
     return FTRSDKAccountIdTypeOther;
   }
 }
+
+- (NSArray<NSString *> *)supportedEvents {
+    return @[@"forterTokenUpdate"];
+}
+
 
 @end
