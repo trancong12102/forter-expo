@@ -50,13 +50,17 @@ RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
   if (error != nil) {
       errorCallback(error);
   } else {
-      [ForterSDK setupWithDeviceUid:mobileUid siteId:siteId]
+      [ForterSDK setupWithDeviceUid:mobileUid siteId:siteId];
       if (!isForterTokenRegistered) {
-          ForterTokenListener * listener = [[ForterTokenListener alloc] initOnForterTokenUpdate:^(NSString* _Nullable forterMobileUID) {
-              [self sendEventWithName:@"forterTokenUpdate" body:@{@"forterMobileUID": forterMobileUID}];
+          ForterTokenListener * listener = [ForterTokenListener alloc];
+          [listener registerOnForterTokenUpdate: ^(NSString* _Nullable forterMobileUID) {
+              [self.bridge enqueueJSCall:@"RCTDeviceEventEmitter"
+                              method:@"emit"
+                                    args:@[@"forterTokenUpdate", @{@"forterMobileUID": forterMobileUID}]
+                              completion:NULL];
           }];
           
-          [ForterSDK registerForterTokenListener: listener]
+          [ForterSDK registerForterTokenListener: listener];
           isForterTokenRegistered = YES;
       }
       [[ForterSDK sharedInstance] setDeviceUniqueIdentifier:mobileUid];

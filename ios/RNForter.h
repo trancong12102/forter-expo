@@ -11,6 +11,8 @@
 #import "RCTEventEmitter.h"
 #endif
 
+
+
 @interface RNForter : NSObject <RCTBridgeModule>
 
 @end

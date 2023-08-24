@@ -260,7 +260,6 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #if __has_warning("-Watimport-in-framework-header")
 #pragma clang diagnostic ignored "-Watimport-in-framework-header"
 #endif
-@import FTRCommon;
 @import ObjectiveC;
 #endif
 
@@ -301,9 +300,10 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) FTRSessionTr
 
 
 SWIFT_CLASS("_TtC9ForterSDK19ForterTokenListener")
-@interface ForterTokenListener : FTRObjcListener
-- (nonnull instancetype)initOnForterTokenUpdate:(void (^ _Nonnull)(NSString * _Nonnull))onForterTokenUpdate OBJC_DESIGNATED_INITIALIZER;
-- (nonnull instancetype)init:(void (^ _Nonnull)(id _Nullable))onDataReceived SWIFT_UNAVAILABLE;
+@interface ForterTokenListener : NSObject
+@property (nonatomic, strong) FTRObjcListener * _Nullable objcListener;
+- (void)registerOnForterTokenUpdate:(void (^ _Nonnull)(NSString * _Nonnull))onForterTokenUpdate;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
 #endif
