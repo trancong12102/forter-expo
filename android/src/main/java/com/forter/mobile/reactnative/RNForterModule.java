@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -27,15 +28,23 @@ import static com.forter.mobile.reactnative.RNForterConstants.NO_MOBILE_UID_FOUN
 import static com.forter.mobile.reactnative.RNForterConstants.NO_SITE_ID_FOUND;
 import static com.forter.mobile.reactnative.RNForterConstants.SUCCESS;
 
-public class RNForterModule extends ReactContextBaseJavaModule  {
-    private static Boolean isForterTokenRegistered = false;
+public class RNForterModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
     final private ReactApplicationContext reactContext;
     final private Application application;
-
+    private ForterTokenListener forterTokenListener;
     public RNForterModule(ReactApplicationContext reactContext, Application application) {
         super(reactContext);
         this.reactContext = reactContext;
         this.application = application;
+        reactContext.addLifecycleEventListener(this);
+        forterTokenListener = new ForterTokenListener() {
+            @Override
+            public void onForterTokenUpdate(String forterMobileUID) {
+                WritableMap params = Arguments.createMap();
+                params.putString("forterMobileUID", forterMobileUID);
+                RNUtil.emitEvent(reactContext, RNForterConstants.FORTER_TOKEN_UPDATE, params);
+            }
+        };
     }
 
     @Override
@@ -60,7 +69,10 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
                 return;
             }
 
-            registerForterTokenListenerOnce(reactContext);
+            if (forterTokenListener != null) {
+                sdk().registerForterTokenListener(forterTokenListener);
+            }
+
             sdk().init(this.application, siteId, mobileUid);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -74,25 +86,6 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
             successCallback.invoke(SUCCESS);
         } catch (Exception e) {
             errorCallback.invoke(e.getMessage());
-        }
-    }
-
-    private void registerForterTokenListenerOnce(ReactApplicationContext reactContext) {
-        if (!isForterTokenRegistered) {
-            //Must use bool flag here:
-            //Due to ReactNative hot reload it is possible that registration may occur
-            //multiple times leading to forterTokenUpdate event been emitted multiple times
-            final ForterTokenListener listener = new ForterTokenListener() {
-                @Override
-                public void onForterTokenUpdate(String forterMobileUID) {
-                    WritableMap params = Arguments.createMap();
-                    params.putString("forterMobileUID", forterMobileUID);
-                    RNUtil.emitEvent(reactContext, RNForterConstants.FORTER_TOKEN_UPDATE, params);
-                }
-            };
-
-            sdk().registerForterTokenListener(listener);
-            isForterTokenRegistered = true;
         }
     }
 
@@ -209,5 +202,23 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
 
     private IForterSDK sdk() {
         return ForterSDK.getInstance();
+    }
+
+    @Override
+    public void onHostResume() {
+
+    }
+
+    @Override
+    public void onHostPause() {
+
+    }
+
+    @Override
+    public void onHostDestroy() {
+        if (forterTokenListener != null) {
+            ForterSDK.getInstance().unregisterForterTokenListener(forterTokenListener);
+            forterTokenListener = null;
+        }
     }
 }
