@@ -13,6 +13,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
+import com.forter.mobile.common.ListenableVariable;
 import com.forter.mobile.fortersdk.ForterSDK;
 import com.forter.mobile.fortersdk.integrationkit.ForterIntegrationUtils;
 import com.forter.mobile.fortersdk.integrationkit.ForterTokenListener;
@@ -28,23 +29,29 @@ import static com.forter.mobile.reactnative.RNForterConstants.NO_MOBILE_UID_FOUN
 import static com.forter.mobile.reactnative.RNForterConstants.NO_SITE_ID_FOUND;
 import static com.forter.mobile.reactnative.RNForterConstants.SUCCESS;
 
-public class RNForterModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
+import androidx.annotation.NonNull;
+
+import java.util.Objects;
+
+public class RNForterModule extends ReactContextBaseJavaModule  {
+    private static RNForterModule instance;
     final private ReactApplicationContext reactContext;
     final private Application application;
+    private boolean isInitialized;
     private ForterTokenListener forterTokenListener;
-    public RNForterModule(ReactApplicationContext reactContext, Application application) {
+
+    public static RNForterModule getInstance(ReactApplicationContext reactContext, Application application) {
+        if (instance == null) {
+            instance = new RNForterModule(reactContext, application);
+        }
+
+        return instance;
+    }
+
+    private RNForterModule(ReactApplicationContext reactContext, Application application) {
         super(reactContext);
         this.reactContext = reactContext;
         this.application = application;
-        reactContext.addLifecycleEventListener(this);
-        forterTokenListener = new ForterTokenListener() {
-            @Override
-            public void onForterTokenUpdate(String forterMobileUID) {
-                WritableMap params = Arguments.createMap();
-                params.putString("forterMobileUID", forterMobileUID);
-                RNUtil.emitEvent(reactContext, RNForterConstants.FORTER_TOKEN_UPDATE, params);
-            }
-        };
     }
 
     @Override
@@ -58,9 +65,12 @@ public class RNForterModule extends ReactContextBaseJavaModule implements Lifecy
             String mobileUid,
             Callback successCallback,
             Callback errorCallback
-            ) {
-
+    ) {
         try {
+            if (isInitialized) {
+                return;
+            }
+
             if (siteId == null || siteId.isEmpty()) {
                 errorCallback.invoke(new Exception(NO_SITE_ID_FOUND).getMessage());
                 return;
@@ -69,20 +79,26 @@ public class RNForterModule extends ReactContextBaseJavaModule implements Lifecy
                 return;
             }
 
-            if (forterTokenListener != null) {
-                sdk().registerForterTokenListener(forterTokenListener);
-            }
+            sdk().registerForterTokenListener(new ForterTokenListener() {
+                @Override
+                public void onForterTokenUpdate(@NonNull String forterMobileUID) {
+                    WritableMap params = Arguments.createMap();
+                    params.putString("forterMobileUID", forterMobileUID);
+                    RNUtil.emitEvent(getReactApplicationContext(), RNForterConstants.FORTER_TOKEN_UPDATE, params);
+                }
+            });
 
             sdk().init(this.application, siteId, mobileUid);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                 // RN Activity events already happened on launch before we got a chance to register
                 // lifecycle callbacks - mark as foreground or we might not get events!
-                sdk().getActivityLifecycleCallbacks().onActivityResumed(reactContext.getCurrentActivity());
+                sdk().getActivityLifecycleCallbacks().onActivityResumed(Objects.requireNonNull(reactContext.getCurrentActivity()));
                 this.application.registerActivityLifecycleCallbacks(sdk().getActivityLifecycleCallbacks());
             }
 
             sdk().trackAction(TrackType.APP_ACTIVE, "RNForter");
+            isInitialized = true;
             successCallback.invoke(SUCCESS);
         } catch (Exception e) {
             errorCallback.invoke(e.getMessage());
@@ -186,7 +202,7 @@ public class RNForterModule extends ReactContextBaseJavaModule implements Lifecy
         } else if (type.equals("TWITTER")) {
             return ForterAccountIDType.TWITTER_ID;
         } else {
-        // "APPLE_IDFA" or  "OTHER"
+            // "APPLE_IDFA" or  "OTHER"
             return ForterAccountIDType.OTHER;
         }
     }
@@ -202,23 +218,5 @@ public class RNForterModule extends ReactContextBaseJavaModule implements Lifecy
 
     private IForterSDK sdk() {
         return ForterSDK.getInstance();
-    }
-
-    @Override
-    public void onHostResume() {
-
-    }
-
-    @Override
-    public void onHostPause() {
-
-    }
-
-    @Override
-    public void onHostDestroy() {
-        if (forterTokenListener != null) {
-            ForterSDK.getInstance().unregisterForterTokenListener(forterTokenListener);
-            forterTokenListener = null;
-        }
     }
 }
