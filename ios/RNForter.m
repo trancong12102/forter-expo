@@ -30,6 +30,7 @@ static NSString *const NO_SITE_ID_FOUND             = @"SiteID is empty or missi
 static NSString *const NO_MOBILE_UID_FOUND          = @"MobileUID is empty or missing";
 static NSString *const SUCCESS                      = @"Success";
 static ForterTokenListener* listener;
+static bool isInitialized = NO;
 
 RCT_EXPORT_MODULE();
 
@@ -64,6 +65,10 @@ RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
                   successCallback:(RCTResponseSenderBlock)successCallback
                   errorCallback:(RCTResponseErrorBlock)errorCallback) {
   NSError* error = nil;
+    
+  if (isInitialized) {
+      return;
+  }
   
   if (!siteId || [siteId isEqualToString:@""]) {
       error = [NSError errorWithDomain:NO_SITE_ID_FOUND code:0 userInfo:nil];
@@ -83,6 +88,7 @@ RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
       [ForterSDK setupWithDeviceUid:mobileUid siteId:siteId];
       [[ForterSDK sharedInstance] setDeviceUniqueIdentifier:mobileUid];
       successCallback(@[SUCCESS]);
+      isInitialized = YES;
   }
 }
 
