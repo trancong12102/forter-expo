@@ -13,7 +13,6 @@
 
 
 @interface RNForter : RCTEventEmitter <RCTBridgeModule>
-
 @end
 
 

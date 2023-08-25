@@ -1,39 +1,63 @@
 #import "RNForter.h"
 
-#if __has_include(<ForterSDK/ForterSDK.h>) // from Pod
+#if __has_include(<React/RCTBridgeModule.h>)
+#import <React/RCTBridgeModule.h>
+#else
+#import "RCTBridgeModule.h"
+#endif
+
+#if __has_include(<React/RCTBridge.h>)
+#import <React/RCTBridge.h>
+#else
+#import "RCTBridge.h.h"
+#endif
+
+#if __has_include(<ForterSDK/ForterSDK.h>)
 #import <ForterSDK/ForterSDK.h>
 #else
 #import "ForterSDK.h"
 #endif
 
-#if __has_include(<ForterSDK/ForterSDK-Swift.h>) // from Pod
+#if __has_include(<ForterSDK/ForterSDK-Swift.h>)
 #import <ForterSDK/ForterSDK-Swift.h>
 #else
 #import "ForterSDK-Swift.h"
 #endif
 
-
 @implementation RNForter
+
+static NSString *const NO_SITE_ID_FOUND             = @"SiteID is empty or missing";
+static NSString *const NO_MOBILE_UID_FOUND          = @"MobileUID is empty or missing";
+static NSString *const SUCCESS                      = @"Success";
+static ForterTokenListener* listener;
+
 RCT_EXPORT_MODULE();
 
 - (id)init {
     self = [super init];
     if (self != nil) {
         NSLog(@"[ForterSDK] Setting up an RNForter instance");
+        if (listener == nil) {
+            listener = [ForterTokenListener alloc];
+        }
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleBridgeWillReloadNotification:)
+                                                     name:RCTBridgeWillReloadNotification
+                                                   object:nil];
     }
     return self;
+}
+
+- (void)handleBridgeWillReloadNotification:(NSNotification *)notification {
+    //Register to hot reloads and release resources
+    [ForterSDK unregisterForterTokenListener: listener];
 }
 
 + (BOOL)requiresMainQueueSetup
 {
     return YES;
 }
-
-static NSString *const NO_SITE_ID_FOUND             = @"SiteID is empty or missing";
-static NSString *const NO_MOBILE_UID_FOUND          = @"MobileUID is empty or missing";
-static NSString *const SUCCESS                      = @"Success";
-
-static BOOL isForterTokenRegistered = NO;
 
 RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
                   mobileUid:(NSString*)mobileUid
@@ -51,19 +75,12 @@ RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
   if (error != nil) {
       errorCallback(error);
   } else {
+      [listener registerOnForterTokenUpdate: ^(NSString* _Nullable forterMobileUID) {
+          [self sendEventWithName:@"forterTokenUpdate" body:@{@"forterMobileUID": forterMobileUID}];
+      }];
+      
+      [ForterSDK registerForterTokenListener:listener];
       [ForterSDK setupWithDeviceUid:mobileUid siteId:siteId];
-      if (!isForterTokenRegistered) {
-          ForterTokenListener * listener = [ForterTokenListener alloc];
-          [listener registerOnForterTokenUpdate: ^(NSString* _Nullable forterMobileUID) {
-              if ([self canSendEvents_DEPRECATED]) {
-                  //TODO: canSendEvents_DEPRECATED must be checked or app will crash on Hot Reloads, not sure why.
-                  [self sendEventWithName:@"forterTokenUpdate" body:@{@"forterMobileUID": forterMobileUID}];
-              }
-          }];
-          
-          [ForterSDK registerForterTokenListener: listener];
-          isForterTokenRegistered = YES;
-      }
       [[ForterSDK sharedInstance] setDeviceUniqueIdentifier:mobileUid];
       successCallback(@[SUCCESS]);
   }
@@ -209,6 +226,11 @@ RCT_EXPORT_METHOD(getSDKVersionSignature:(RCTResponseSenderBlock)callback) {
 - (NSArray<NSString *> *)supportedEvents {
     return @[@"forterTokenUpdate"];
 }
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:RCTBridgeWillReloadNotification
+                                                      object:nil];}
 
 
 @end
