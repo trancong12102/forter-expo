@@ -92,8 +92,7 @@ RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
   }
 }
 
-RCT_EXPORT_METHOD(getForterToken:
-                  successCallback:(RCTResponseSenderBlock)successCallback
+RCT_EXPORT_METHOD(getForterToken:(RCTResponseSenderBlock)successCallback
                   errorCallback:(RCTResponseErrorBlock)errorCallback) {
     NSError* error = nil;
     NSString* forterToken = [ForterSDK getForterToken: error];
