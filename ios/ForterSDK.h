@@ -77,6 +77,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) unregisterForterTokenListener: (ForterTokenListener*) listener;
 
 /**
+ * Get the latest Forter token
+ */
++ (NSString*) getForterToken: (NSError*) error;
+
+/**
  Use this method to update the current FTRSDKConfiguration in the shared instance.
  
  @param configuration FTRSDKConfiguration object with the desired SDK configuration

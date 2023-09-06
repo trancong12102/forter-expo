@@ -92,6 +92,22 @@ RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
   }
 }
 
+RCT_EXPORT_METHOD(getForterToken:
+                  successCallback:(RCTResponseSenderBlock)successCallback
+                  errorCallback:(RCTResponseErrorBlock)errorCallback) {
+    NSError* error = nil;
+    NSString* forterToken = [ForterSDK getForterToken: error];
+    if (error != nil) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            errorCallback(@[error]);
+        });
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            successCallback(@[forterToken]);
+        });
+    }
+}
+
 RCT_EXPORT_METHOD(getDeviceUniqueID:(RCTResponseSenderBlock)callback) {
   dispatch_async(dispatch_get_main_queue(), ^{
     callback(@[[[[UIDevice currentDevice] identifierForVendor] UUIDString]]);
