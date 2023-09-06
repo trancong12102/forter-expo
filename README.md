@@ -113,14 +113,22 @@ forterSDK.getDeviceUniqueID( (deviceID) => {
 });
 ```
 
+### Get the latest Forter token:
+``` Javascript
+forterSDK.getForterToken(forterTokenUID => {
+     console.warn('token: ' + forterTokenUID);
+   },
+   error => {},
+);
+```
+
 ### Register Forter Token updates:
 ``` Javascript
 forterSDK.registerForterTokenListener(forterTokenUID => {
   //Forter token updated
   console.warn('token: ' + forterTokenUID);
 });
-``` 
-
+```
 
 ### Optional, Add your custom tracking:
 ``` Javascript
