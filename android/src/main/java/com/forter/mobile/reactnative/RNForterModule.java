@@ -18,6 +18,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.forter.mobile.fortersdk.ForterSDK;
+import com.forter.mobile.fortersdk.api.ForterSDKError;
 import com.forter.mobile.fortersdk.integrationkit.ForterIntegrationUtils;
 import com.forter.mobile.fortersdk.integrationkit.ForterTokenListener;
 import com.forter.mobile.fortersdk.interfaces.IForterSDK;
@@ -201,6 +202,16 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
         } else {
             // "APPLE_IDFA" or  "OTHER"
             return ForterAccountIDType.OTHER;
+        }
+    }
+
+    @ReactMethod
+    public void getForterToken(Callback successCallback, Callback errorCallback) {
+        try {
+            final String token = sdk().getForterToken();
+            successCallback.invoke(token);
+        } catch (ForterSDKError e) {
+            errorCallback.invoke(e);
         }
     }
 

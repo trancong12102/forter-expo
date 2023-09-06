@@ -70,6 +70,15 @@ forterSDK.registerForterTokenListener = (callback) => {
 }
 
 /**
+ * Get the latest Forter token
+ * @param {*} successC
+ * @param {*} errorC
+ */
+forterSDK.getForterToken = (successC, errorC) => {
+    return RNForter.getForterToken(successC, errorC)
+}
+
+/**
  * Get the device's native unique ID
  * @param {*} callback
  */

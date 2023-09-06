@@ -44,5 +44,5 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.forter.mobile:fortersdk-auth:2.5.0'
+    implementation 'com.forter.mobile:fortersdk-auth:2.5.1'
 }
