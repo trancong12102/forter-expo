@@ -9,7 +9,7 @@
 #if __has_include(<React/RCTBridge.h>)
 #import <React/RCTBridge.h>
 #else
-#import "RCTBridge.h.h"
+#import "RCTBridge.h"
 #endif
 
 #if __has_include(<ForterSDK/ForterSDK.h>)
@@ -18,10 +18,10 @@
 #import "ForterSDK.h"
 #endif
 
-#if __has_include(<ForterSDK/ForterSDK-Swift.h>)
-#import <ForterSDK/ForterSDK-Swift.h>
+#if __has_include(<ForterSDK/ForterTokenListener.h>)
+#import <ForterSDK/ForterTokenListener.h>
 #else
-#import "ForterSDK-Swift.h"
+#import "ForterTokenListener.h"
 #endif
 
 @implementation RNForter
@@ -65,14 +65,14 @@ RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
                   successCallback:(RCTResponseSenderBlock)successCallback
                   errorCallback:(RCTResponseErrorBlock)errorCallback) {
   NSError* error = nil;
-    
+
   if (isInitialized) {
       return;
   }
-  
+
   if (!siteId || [siteId isEqualToString:@""]) {
       error = [NSError errorWithDomain:NO_SITE_ID_FOUND code:0 userInfo:nil];
-    
+
   } else if (!mobileUid || [mobileUid isEqualToString:@""]) {
       error = [NSError errorWithDomain:NO_MOBILE_UID_FOUND code:1 userInfo:nil];
   }
@@ -80,10 +80,10 @@ RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
   if (error != nil) {
       errorCallback(error);
   } else {
-      [listener registerOnForterTokenUpdate: ^(NSString* _Nullable forterMobileUID) {
+      [listener registerOnUpdate: ^(NSString* _Nullable forterMobileUID) {
           [self sendEventWithName:@"forterTokenUpdate" body:@{@"forterMobileUID": forterMobileUID}];
       }];
-      
+
       [ForterSDK registerForterTokenListener:listener];
       [ForterSDK setupWithDeviceUid:mobileUid siteId:siteId];
       [[ForterSDK sharedInstance] setDeviceUniqueIdentifier:mobileUid];
@@ -95,7 +95,7 @@ RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
 RCT_EXPORT_METHOD(getForterToken:(RCTResponseSenderBlock)successCallback
                   errorCallback:(RCTResponseErrorBlock)errorCallback) {
     NSError* error = nil;
-    NSString* forterToken = [ForterSDK getForterToken: error];
+    NSString* forterToken = [ForterSDK getForterToken: &error];
     if (error != nil) {
         dispatch_async(dispatch_get_main_queue(), ^{
             errorCallback(@[error]);

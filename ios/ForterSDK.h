@@ -12,6 +12,7 @@
 #import "FTRSDKPublicConstants.h"
 #import "FTRSDKConfiguration.h"
 #import "FTRSDKConfigurationKeys.h"
+#import "ForterTokenListener.h"
 
 #if FTR_SDK_UI_KIT_DEPENDENCY_ENABLED
 #import "FTRSDKApplicationDelegate.h"
@@ -26,8 +27,6 @@ FOUNDATION_EXPORT const unsigned char ForterSDKVersionString[];
 
 
 NS_ASSUME_NONNULL_BEGIN
-
-@class ForterTokenListener;
 
 /**
  ForterSDK - Simple and lightweight toolkit that lets you integrate with Forter.
@@ -59,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param siteId The Forter site id from the Forter Portal
  @return ForterSDK shared instance
  */
-+ (instancetype)setupWithDeviceUid:(NSString *)deviceUid siteId: (NSString *) siteId;
++ (instancetype)setupWithDeviceUid:(NSString *)deviceUid siteId:(NSString *)siteId;
 /**
  * Register for Forter token updates
  * YOU MUST CALL THIS METHOD RIGHT AFTER INITIALIZING THE SDK
@@ -67,19 +66,19 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param listener The listener to register
  */
-+ (void) registerForterTokenListener: (ForterTokenListener*) listener;
++ (void)registerForterTokenListener:(ForterTokenListener *)listener;
 
 /**
  * Unregister Forter token updates
  *
  * @param listener The listener to unregister
  */
-+ (void) unregisterForterTokenListener: (ForterTokenListener*) listener;
++ (void)unregisterForterTokenListener:(ForterTokenListener *)listener;
 
 /**
  * Get the latest Forter token
  */
-+ (NSString*) getForterToken: (NSError*) error;
++ (NSString *)getForterToken:(NSError **)error;
 
 /**
  Use this method to update the current FTRSDKConfiguration in the shared instance.
