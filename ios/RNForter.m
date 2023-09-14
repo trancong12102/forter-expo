@@ -39,7 +39,9 @@ RCT_EXPORT_MODULE();
     if (self != nil) {
         NSLog(@"[ForterSDK] Setting up an RNForter instance");
         if (listener == nil) {
-            listener = [ForterTokenListener alloc];
+            listener = [[ForterTokenListener alloc] initWith:^(NSString *forterMobileUid) {
+                [self sendEventWithName:@"forterTokenUpdate" body:@{@"forterMobileUID": forterMobileUid}];
+            }];
         }
 
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -80,10 +82,6 @@ RCT_EXPORT_METHOD(initSdk:(NSString*)siteId
   if (error != nil) {
       errorCallback(error);
   } else {
-      [listener registerOnUpdate: ^(NSString* _Nullable forterMobileUID) {
-          [self sendEventWithName:@"forterTokenUpdate" body:@{@"forterMobileUID": forterMobileUID}];
-      }];
-
       [ForterSDK registerForterTokenListener:listener];
       [ForterSDK setupWithDeviceUid:mobileUid siteId:siteId];
       [[ForterSDK sharedInstance] setDeviceUniqueIdentifier:mobileUid];

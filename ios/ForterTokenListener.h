@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ForterTokenListener : NSObject
 
-- (void)registerOnUpdate:(void (^)(NSString * _Nonnull))onUpdate;
+- (instancetype)initWith:(nonnull void (^)(NSString * _Nonnull __strong))onUpdate;
 
 @end
 
