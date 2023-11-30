@@ -39,9 +39,11 @@ RCT_EXPORT_MODULE();
     if (self != nil) {
         NSLog(@"[ForterSDK] Setting up an RNForter instance");
         if (listener == nil) {
-            listener = [[ForterTokenListener alloc] initWith:^(NSString *forterMobileUid) {
+            listener = [[ForterTokenListener alloc] initWithUpdatesHandler:^(NSString *forterMobileUid) {
                 [self sendEventWithName:@"forterTokenUpdate" body:@{@"forterMobileUID": forterMobileUid}];
             }];
+
+            [ForterSDK registerForterTokenListener: listener];
         }
 
         [[NSNotificationCenter defaultCenter] addObserver:self
