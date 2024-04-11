@@ -15,7 +15,7 @@ Add the Forter dependency to your `package.json`:
 ```json
 {
  "dependencies": {
-       "react-native-forter": "git+https://forter-mobile-git:zvGKcVtDhkfj4asNekSn@bitbucket.org/forter-mobile/forter-react-plugin.git#v0.1.17"
+       "react-native-forter": "git+https://bitbucket.org/forter-mobile/forter-react-plugin.git#v1.0.0"
   },
 }
 ```
@@ -26,7 +26,7 @@ First add the `ForterSDK` pod and the React Native pod to `ios/Podfile`:
 
 
 ```podspec
-pod 'ForterSDK', :git => 'https://forter-mobile-git:zvGKcVtDhkfj4asNekSn@bitbucket.org/forter-mobile/forter-ios-sdk.git'
+pod 'ForterSDK', :git => 'https://bitbucket.org/forter-mobile/forter-ios-sdk.git'
 pod 'react-native-forter', :path => '../node_modules/react-native-forter'
 ```
 

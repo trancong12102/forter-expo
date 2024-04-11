@@ -1,2 +1,2 @@
 #!/bin/bash
-cp ~/dev/forter-ios-sdk/SDK/Headers/* ./ios
+cp ~/dev/bitbucket/forter-ios-sdk/Cocoapods/SDK/Headers/* ./ios
