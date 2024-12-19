@@ -8,18 +8,10 @@
 
 #pragma once
 
-#define FTR_SDK_VERSION_STRING_NAME @"2.3.3"
-#define FTR_SDK_VERSION_STRING_BUILD @"1"
-#define FTR_SDK_VERSION_SIGNATURE @"0dfd8b6ece0f0aeca6bb94bb1ed140cc"
-
-#define FTR_SDK_LOG_LEVEL_OFF 0
-#define FTR_SDK_LOG_LEVEL_ERROR 1
-#define FTR_SDK_LOG_LEVEL_WARN 2
-#define FTR_SDK_LOG_LEVEL_DEBUG 3
-#define FTR_SDK_LOG_LEVEL_INFO 4
-#define FTR_SDK_LOG_LEVEL_VERBOSE 5
-
-#define FTR_SDK_UI_KIT_DEPENDENCY_ENABLED 1 
+#define FTR_SDK_VERSION_STRING_NAME @"2.4.2"
+#define FTR_SDK_VERSION_STRING_BUILD @"2"
+#define FTR_SDK_VERSION_SIGNATURE @"fcfabd2fb2e1f1569cea0681481883b0"
+#define FTR_SDK_UI_KIT_DEPENDENCY_ENABLED 1
 
 /** 
  Navigation type to be used when tracking navigation using [ForterSDK trackNavigation:withType:]
