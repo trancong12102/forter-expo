@@ -1,15 +1,16 @@
 
-import {NativeModules} from 'react-native';
+import {NativeEventEmitter, NativeModules} from 'react-native';
 
 const {RNForter} = NativeModules;
+const emitter =  new NativeEventEmitter(RNForter)
 const forterSDK = {};
 
 const ForterNavigationType = {
-    PRODUCT : "PRODUCT", 
-    ACCOUNT : "ACCOUNT", 
-    SEARCH : "SEARCH", 
-    CHECKOUT : "CHECKOUT", 
-    CART : "CART", 
+    PRODUCT : "PRODUCT",
+    ACCOUNT : "ACCOUNT",
+    SEARCH : "SEARCH",
+    CHECKOUT : "CHECKOUT",
+    CART : "CART",
     HELP : "HELP",
     APP : "APP"
 };
@@ -49,18 +50,37 @@ const ForterAccountType = {
 
 /**
  * Start the Forter SDK
- * @param {String} siteId 
- * @param {String} mobileUid 
- * @param {*} successC 
- * @param {*} errorC 
+ * @param {String} siteId
+ * @param {String} mobileUid
+ * @param {*} successC
+ * @param {*} errorC
  */
 forterSDK.init = (siteId, mobileUid, successC, errorC) => {
     return RNForter.initSdk(siteId, mobileUid, successC, errorC);
 };
 
 /**
+ * Register for forter token updates
+ * @param {*} callback
+ */
+forterSDK.registerForterTokenListener = (callback) => {
+    return emitter.addListener("forterTokenUpdate", event => {
+        callback(event.forterMobileUID)
+    })
+}
+
+/**
+ * Get the latest Forter token
+ * @param {*} successC
+ * @param {*} errorC
+ */
+forterSDK.getForterToken = (successC, errorC) => {
+    return RNForter.getForterToken(successC, errorC)
+}
+
+/**
  * Get the device's native unique ID
- * @param {*} callback 
+ * @param {*} callback
  */
 forterSDK.getDeviceUniqueID = (callback) => {
     return RNForter.getDeviceUniqueID(callback);
@@ -68,8 +88,8 @@ forterSDK.getDeviceUniqueID = (callback) => {
 
 /**
  * Set the currently logged-in account ID
- * @param {String} accountUid 
- * @param {ForterAccountType} accountType 
+ * @param {String} accountUid
+ * @param {ForterAccountType} accountType
  */
 forterSDK.setAccountIdentifier = (accountUid, accountType) => {
     return RNForter.setAccountIdentifier(accountUid, accountType);
@@ -77,8 +97,8 @@ forterSDK.setAccountIdentifier = (accountUid, accountType) => {
 
 /**
  * Track a user's navigation inside the app
- * @param {String} screenName 
- * @param {ForterNavigationType} navigationType 
+ * @param {String} screenName
+ * @param {ForterNavigationType} navigationType
  */
 forterSDK.trackNavigation = (screenName, navigationType) => {
     return RNForter.trackNavigation(screenName, navigationType);
@@ -86,11 +106,11 @@ forterSDK.trackNavigation = (screenName, navigationType) => {
 
 /**
  * Track a user's navigation to product-related screens
- * @param {String} screenName 
- * @param {ForterNavigationType} navigationType 
- * @param {String} itemId 
- * @param {String} itemCategory 
- * @param {String} otherInfo 
+ * @param {String} screenName
+ * @param {ForterNavigationType} navigationType
+ * @param {String} itemId
+ * @param {String} itemCategory
+ * @param {String} otherInfo
  */
 forterSDK.trackNavigationWithExtraData = (screenName, navigationType, itemId, itemCategory, otherInfo) => {
     return RNForter.trackNavigationWithExtraData(screenName, navigationType, itemId, itemCategory, otherInfo);
@@ -98,7 +118,7 @@ forterSDK.trackNavigationWithExtraData = (screenName, navigationType, itemId, it
 
 /**
  * Track a user's action inside the app
- * @param {ForterActionType} actionType 
+ * @param {ForterActionType} actionType
  */
 forterSDK.trackAction = (actionType) => {
     return RNForter.trackAction(actionType);
@@ -106,8 +126,8 @@ forterSDK.trackAction = (actionType) => {
 
 /**
  * Track a user's action with additional information
- * @param {ForterActionType} actionType 
- * @param {String} message 
+ * @param {ForterActionType} actionType
+ * @param {String} message
  */
 forterSDK.trackActionWithMessage = (actionType, message) => {
     return RNForter.trackActionWithMessage(actionType, message);
@@ -115,8 +135,8 @@ forterSDK.trackActionWithMessage = (actionType, message) => {
 
 /**
  * Track a user's action with additional information
- * @param {ForterActionType} actionType 
- * @param {object} dictionary 
+ * @param {ForterActionType} actionType
+ * @param {object} dictionary
  */
 forterSDK.trackActionWithJSON = (actionType, dictionary) => {
     return RNForter.trackActionWithJSON(actionType, dictionary);

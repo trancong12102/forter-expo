@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/** 
+/**
  Forter SDK configuration class.
  
  @warning ** FOR ADVANCED USE ONLY **. Documentation will be provided upon request by the Forter team.
