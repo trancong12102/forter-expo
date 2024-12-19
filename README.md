@@ -117,3 +117,20 @@ forterSDK.trackAction(ForterActionType.ACCOUNT_LOGIN)
 forterSDK.trackNavigation('mainpage', ForterNavigationType.PRODUCT);
 forterSDK.trackAction(ForterActionType.ACCOUNT_LOGIN)
 ```
+
+### Register Forter Token updates:
+```
+forterSDK.registerForterTokenListener(forterTokenUID => {
+  //Forter token updated
+  console.warn('token: ' + forterTokenUID);
+});
+```
+
+### Get the latest Forter token:
+```
+forterSDK.getForterToken(forterTokenUID => {
+     console.warn('token: ' + forterTokenUID);
+   },
+   error => {},
+);
+```
