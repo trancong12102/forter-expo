@@ -1,16 +1,26 @@
 package com.forter.mobile.reactnative;
 
 
+import static com.forter.mobile.reactnative.RNForterConstants.NO_MOBILE_UID_FOUND;
+import static com.forter.mobile.reactnative.RNForterConstants.NO_SITE_ID_FOUND;
+import static com.forter.mobile.reactnative.RNForterConstants.SUCCESS;
+
 import android.app.Application;
 import android.os.Build;
 
+import androidx.annotation.NonNull;
+
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
 import com.forter.mobile.fortersdk.ForterSDK;
+import com.forter.mobile.fortersdk.api.ForterSDKError;
 import com.forter.mobile.fortersdk.integrationkit.ForterIntegrationUtils;
+import com.forter.mobile.fortersdk.integrationkit.ForterTokenListener;
 import com.forter.mobile.fortersdk.interfaces.IForterSDK;
 import com.forter.mobile.fortersdk.models.ForterAccountIDType;
 import com.forter.mobile.fortersdk.models.NavigationType;
@@ -19,16 +29,24 @@ import com.forter.mobile.fortersdk.models.TrackType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.forter.mobile.reactnative.RNForterConstants.NO_MOBILE_UID_FOUND;
-import static com.forter.mobile.reactnative.RNForterConstants.NO_SITE_ID_FOUND;
-import static com.forter.mobile.reactnative.RNForterConstants.SUCCESS;
+import java.util.Objects;
 
 public class RNForterModule extends ReactContextBaseJavaModule  {
+    private static RNForterModule instance;
+    final private ReactApplicationContext reactContext;
+    final private Application application;
+    private boolean isInitialized;
+    private ForterTokenListener forterTokenListener;
 
-    private ReactApplicationContext reactContext;
-    private Application application;
+    public static RNForterModule getInstance(ReactApplicationContext reactContext, Application application) {
+        if (instance == null) {
+            instance = new RNForterModule(reactContext, application);
+        }
 
-    public RNForterModule(ReactApplicationContext reactContext, Application application) {
+        return instance;
+    }
+
+    private RNForterModule(ReactApplicationContext reactContext, Application application) {
         super(reactContext);
         this.reactContext = reactContext;
         this.application = application;
@@ -45,9 +63,11 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
             String mobileUid,
             Callback successCallback,
             Callback errorCallback
-            ) {
-
+    ) {
         try {
+            if (isInitialized) {
+                return;
+            }
 
             if (siteId == null || siteId.isEmpty()) {
                 errorCallback.invoke(new Exception(NO_SITE_ID_FOUND).getMessage());
@@ -57,16 +77,26 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
                 return;
             }
 
+            sdk().registerForterTokenListener(new ForterTokenListener() {
+                @Override
+                public void onForterTokenUpdate(@NonNull String forterMobileUID) {
+                    WritableMap params = Arguments.createMap();
+                    params.putString("forterMobileUID", forterMobileUID);
+                    RNUtil.emitEvent(getReactApplicationContext(), RNForterConstants.FORTER_TOKEN_UPDATE, params);
+                }
+            });
+
             sdk().init(this.application, siteId, mobileUid);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                 // RN Activity events already happened on launch before we got a chance to register
                 // lifecycle callbacks - mark as foreground or we might not get events!
-                sdk().getActivityLifecycleCallbacks().onActivityResumed(reactContext.getCurrentActivity());
+                sdk().getActivityLifecycleCallbacks().onActivityResumed(Objects.requireNonNull(reactContext.getCurrentActivity()));
                 this.application.registerActivityLifecycleCallbacks(sdk().getActivityLifecycleCallbacks());
             }
 
             sdk().trackAction(TrackType.APP_ACTIVE, "RNForter");
+            isInitialized = true;
             successCallback.invoke(SUCCESS);
         } catch (Exception e) {
             errorCallback.invoke(e.getMessage());
@@ -129,6 +159,7 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
         } catch (JSONException e) {
             return;
         }
+
         sdk().trackAction(TrackType.OTHER, data);
     }
 
@@ -169,9 +200,28 @@ public class RNForterModule extends ReactContextBaseJavaModule  {
         } else if (type.equals("TWITTER")) {
             return ForterAccountIDType.TWITTER_ID;
         } else {
-        // "APPLE_IDFA" or  "OTHER"
+            // "APPLE_IDFA" or  "OTHER"
             return ForterAccountIDType.OTHER;
         }
+    }
+
+    @ReactMethod
+    public void getForterToken(Callback successCallback, Callback errorCallback) {
+        try {
+            final String token = sdk().getForterToken();
+            successCallback.invoke(token);
+        } catch (ForterSDKError e) {
+            errorCallback.invoke(e);
+        }
+    }
+
+    @ReactMethod
+    public void addListener(String eventName) {
+        // Keep: Required for RN built in Event Emitter Calls.
+    }
+    @ReactMethod
+    public void removeListeners(Integer count) {
+        // Keep: Required for RN built in Event Emitter Calls.
     }
 
     private IForterSDK sdk() {

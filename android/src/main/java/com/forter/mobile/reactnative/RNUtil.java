@@ -1,5 +1,6 @@
 package com.forter.mobile.reactnative;
 
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
@@ -11,6 +12,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -311,5 +313,11 @@ public class RNUtil {
 
         return writableArray;
     }
-
+    public static void emitEvent(ReactContext reactContext,
+                           String eventName,
+                           @androidx.annotation.Nullable WritableMap params) {
+        reactContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName, params);
+    }
 }

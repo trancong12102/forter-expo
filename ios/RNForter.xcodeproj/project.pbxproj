@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B3E7B58A1CC2AC0600A0062D /* RNForter.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNForter.m */; };
+		C85FB888D7AE71E67660C10A /* Pods_RNForter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F90F8A643BE162D100B32B0 /* Pods_RNForter.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,6 +25,11 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNForter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNForter.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		455E1BB475C6312A857EC32A /* Pods-RNForter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNForter.release.xcconfig"; path = "Target Support Files/Pods-RNForter/Pods-RNForter.release.xcconfig"; sourceTree = "<group>"; };
+		526003C02AB054FB00645628 /* ForterTokenListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForterTokenListener.h; sourceTree = "<group>"; };
+		529F4A392A96416600EFC5BC /* FTRSDKConfigurationKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTRSDKConfigurationKeys.h; sourceTree = "<group>"; };
+		54B1FEE6F6401AD54BB11D76 /* Pods-RNForter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNForter.debug.xcconfig"; path = "Target Support Files/Pods-RNForter/Pods-RNForter.debug.xcconfig"; sourceTree = "<group>"; };
+		9F90F8A643BE162D100B32B0 /* Pods_RNForter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RNForter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA7109AE20D80F88000D98CD /* FTRSDKApplicationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTRSDKApplicationDelegate.h; sourceTree = "<group>"; };
 		AA7109AF20D80F88000D98CD /* ForterSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForterSDK.h; sourceTree = "<group>"; };
 		AA7109B020D80F88000D98CD /* FTRWebViewIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTRWebViewIntegration.h; sourceTree = "<group>"; };
@@ -38,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C85FB888D7AE71E67660C10A /* Pods_RNForter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,10 +59,20 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		2752AD0E64A2FFD18E06A15A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9F90F8A643BE162D100B32B0 /* Pods_RNForter.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				526003C02AB054FB00645628 /* ForterTokenListener.h */,
 				AA7109AF20D80F88000D98CD /* ForterSDK.h */,
+				529F4A392A96416600EFC5BC /* FTRSDKConfigurationKeys.h */,
 				AA7109AE20D80F88000D98CD /* FTRSDKApplicationDelegate.h */,
 				AA7109B220D80F88000D98CD /* FTRSDKConfiguration.h */,
 				AA7109B120D80F88000D98CD /* FTRSDKPublicConstants.h */,
@@ -63,7 +80,18 @@
 				B3E7B5881CC2AC0600A0062D /* RNForter.h */,
 				B3E7B5891CC2AC0600A0062D /* RNForter.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
+				CCEE3ED2B20647447E16AA04 /* Pods */,
+				2752AD0E64A2FFD18E06A15A /* Frameworks */,
 			);
+			sourceTree = "<group>";
+		};
+		CCEE3ED2B20647447E16AA04 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				54B1FEE6F6401AD54BB11D76 /* Pods-RNForter.debug.xcconfig */,
+				455E1BB475C6312A857EC32A /* Pods-RNForter.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -73,6 +101,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "RNForter" */;
 			buildPhases = (
+				C909CD18CDDF4EB550EFB94E /* [CP] Check Pods Manifest.lock */,
 				58B511D71A9E6C8500147676 /* Sources */,
 				58B511D81A9E6C8500147676 /* Frameworks */,
 				58B511D91A9E6C8500147676 /* CopyFiles */,
@@ -97,6 +126,7 @@
 				TargetAttributes = {
 					58B511DA1A9E6C8500147676 = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 1430;
 					};
 				};
 			};
@@ -105,6 +135,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 58B511D21A9E6C8500147676;
@@ -116,6 +147,31 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C909CD18CDDF4EB550EFB94E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RNForter-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		58B511D71A9E6C8500147676 /* Sources */ = {
@@ -206,7 +262,9 @@
 		};
 		58B511F01A9E6C8500147676 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 54B1FEE6F6401AD54BB11D76 /* Pods-RNForter.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -217,12 +275,17 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNForter;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNForter-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
 		58B511F11A9E6C8500147676 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 455E1BB475C6312A857EC32A /* Pods-RNForter.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -233,6 +296,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNForter;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNForter-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

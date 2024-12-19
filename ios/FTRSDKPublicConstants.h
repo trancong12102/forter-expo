@@ -13,7 +13,7 @@
 #define FTR_SDK_VERSION_SIGNATURE @"fcfabd2fb2e1f1569cea0681481883b0"
 #define FTR_SDK_UI_KIT_DEPENDENCY_ENABLED 1
 
-/** 
+/**
  Navigation type to be used when tracking navigation using [ForterSDK trackNavigation:withType:]
  */
 typedef NS_ENUM(NSUInteger, FTRSDKNavigationType) {
