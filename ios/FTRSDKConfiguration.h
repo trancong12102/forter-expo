@@ -58,6 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) int logLevel;
 @property (nonatomic, readonly) BOOL forceGETRequest;
 @property (nonatomic, readonly) BOOL shouldCompress;
+@property (nonatomic, readonly) BOOL shouldSendNetworkErrors;
 
 @end
 
