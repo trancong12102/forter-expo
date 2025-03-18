@@ -13,6 +13,7 @@
 #import "FTRSDKConfiguration.h"
 #import "FTRSDKConfigurationKeys.h"
 #import "ForterTokenListener.h"
+#import "FTRSessionTracker.h"
 
 
 
