@@ -1,6 +1,7 @@
 package com.forter.mobile.reactnative;
 
 import android.app.Application;
+import android.content.Context;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,23 +11,30 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
-import com.facebook.react.bridge.JavaScriptModule;
 
 public class RNForterPackage implements ReactPackage {
+
     private Application application;
 
+    // Required for autolinking
+    public RNForterPackage() {
+        this.application = null; // Will fallback to reactContext later
+    }
+
+    // Manual constructor (if ever needed)
     public RNForterPackage(Application application) {
         this.application = application;
     }
 
-
-    public List<Class<? extends JavaScriptModule>> createJSModules() {
-        return Collections.emptyList();
-    }
-
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        return Arrays.<NativeModule>asList(RNForterModule.getInstance(reactContext, application));
+        Application app = this.application != null
+            ? this.application
+            : (Application) reactContext.getApplicationContext();
+
+        return Arrays.<NativeModule>asList(
+            RNForterModule.getInstance(reactContext, app)
+        );
     }
 
     @Override

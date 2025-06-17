@@ -10,8 +10,9 @@ Pod::Spec.new do |s|
   s.homepage     = pkg["homepage"]
   s.author       = pkg["author"]
   s.source       = { :git => pkg["repository"]["url"] }
-  s.source_files = 'ios/**/*.{h,m}'
-  s.platform     = :ios, "10.0"
-  s.dependency 'ForterSDK', '~>3.0.0'
-  s.dependency 'React'
+  s.source_files = 'ios/**/*.{h,m,mm}'
+  s.platform     = :ios, '10.0'
+
+  s.dependency 'ForterSDK', '~> 3.0.3'
+  s.dependency 'React-Core'
 end

@@ -1,48 +1,42 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 31
+    namespace "com.forter.mobile.reactnative"
+
+    compileSdkVersion 33
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 31
+        minSdkVersion 21
+        targetSdkVersion 33
         versionCode 1
         versionName "1.1.1"
     }
-}
 
-buildscript {
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 }
 
 repositories {
-//    mavenLocal()
+    google()
     mavenCentral()
     maven { url "https://maven.google.com" }
     maven {
-        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+        // React Native repository for compilation
         url("$rootDir/../node_modules/react-native/android")
     }
     maven {
-        // Android JSC is installed from npm
-        url("$rootDir/../node_modules/jsc-android/dist")
-    }
-    maven {
-        url("https://mobile-sdks.forter.com/android")
+        url "https://mobile-sdks.forter.com/android"
         credentials {
-        username("forter-android-sdk")
-        password("HvYumAfjVQYQFyoGsmNAefGdR84Esqig")
-      }
+            username "forter-android-sdk"
+            password "HvYumAfjVQYQFyoGsmNAefGdR84Esqig"
+        }
     }
 }
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.forter.mobile:fortersdk:3.0.2'
+    implementation 'androidx.annotation:annotation:1.7.0'
+    implementation 'com.forter.mobile:fortersdk:3.0.4'
 }
