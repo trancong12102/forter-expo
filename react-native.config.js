@@ -1,10 +1,1 @@
-module.exports = {
-    dependency: {
-        platforms: {
-            ios: {},
-            android: {
-                packageInstance: 'new RNForterPackage(getApplication())'
-            }
-        }
-    }
-};
+module.exports = {};

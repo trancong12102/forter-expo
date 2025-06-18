@@ -1,49 +1,41 @@
-# ForterSDK ReactNative wrapper
+# ForterSDK React Native Wrapper
 
-We provide this wrapper for you to be able to maintain a single 
-point of initialization for your app, instead of doing native 
-initialization of our SDK in IOS and Android.
+This wrapper simplifies the initialization and integration of Forter's SDK for **React Native** applications, supporting both **iOS** and **Android** platforms.
 
-This plugin is built for:
-- Forter's iOS SDK
-- Forter's Android SDK
+## Supported Platforms
 
-## Installation
-Add the Forter dependency to your `package.json`:
+- Forter iOS SDK
+- Forter Android SDK
 
+---
+
+## 📦 Installation
+
+### Step 1: Add to `package.json`
 
 ```json
 {
- "dependencies": {
-       "react-native-forter": "git+https://bitbucket.org/forter-mobile/forter-react-plugin.git"
-  },
+  "dependencies": {
+    "react-native-forter": "git+https://bitbucket.org/forter-mobile/forter-react-plugin.git"
+  }
 }
-```
-
-### iOS specific implementation
-
-First add the `ForterSDK` pod and the React Native pod to `ios/Podfile`:
-
-
-```podspec
-pod 'ForterSDK', :git => 'https://bitbucket.org/forter-mobile/forter-ios-releases.git'
-pod 'react-native-forter', :path => '../node_modules/react-native-forter'
 ```
 
 If you are running ReactNative < 0.60 (this should work for 0.60 and above), you must also have the React dependencies defined in the Podfile as described [here](https://facebook.github.io/react-native/docs/next/troubleshooting.html#missing-libraries-for-react).
 
 And finally execute `pod install` (inside `ios` directory).
 
-### Android 
+### Step 2: Android 
 
-First step is to modify `android/settings.gradle`
+#### modify `android/settings.gradle`:
 
 ```gradle
 include ':react-native-forter'
 project(':react-native-forter').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-forter/android')
 ```
 
-Add Forter's private Maven repository to your `android/app/build.gradle` or `settings.gradle` if you are using central declaration of repositories:
+#### Add Forter's private Maven repository to your `android/app/build.gradle` or `settings.gradle` if you are using central declaration of repositories:
+
 ``` gradle
 repositories {
   maven {
@@ -56,11 +48,7 @@ repositories {
 }
 ```
 
-Following steps are not needed on ReactNative 0.60 and above.
-
-You need to link the project: excute from the shell `react-native link react-native-forter` from of the project root or add manually:
-
-Add the project to your dependencies
+#### Add the project to your dependencies\
 ```gradle
 dependencies {
    ...
@@ -68,23 +56,38 @@ dependencies {
 }
 ```
 
-Finally add the following code to your app to register Forter's module
+#### if Autolink is disabled add the following code to your Application to register Forter's module
 
 ```java
 import com.forter.mobile.reactnative.RNForterPackage;
 
+public class MainApplication extends Application implements ReactApplication {
 
-    @Override
-    protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-            new MainReactPackage(),
-            //...
-            new RNForterPackage(MainApplication.this)
-            //...
-      );
-    }
+        ... 
+        
+        @Override
+        protected List<ReactPackage> getPackages() {
+          @SuppressWarnings("UnnecessaryLocalVariable")
+          List<ReactPackage> packages = new PackageList(this).getPackages();
+          
+          packages.add(new RNForterPackage(MainApplication.this));
+          return packages;
+        }
+        
+        ...
 ```
-## JavaScript setup
+
+### Step 3: iOS setup
+
+Add the `ForterSDK` pod and the React Native pod to `ios/Podfile`:
+
+```podspec
+pod 'ForterSDK', :git => 'https://bitbucket.org/forter-mobile/forter-ios-sdk.git'
+pod 'react-native-forter', :path => '../node_modules/react-native-forter'
+```
+
+
+### Step 4: JavaScript setup
 
 Add the following code to your apps `index.js`, this example
 uses `react-native-logger`, which is optional. To use it, add
@@ -118,7 +121,7 @@ forterSDK.trackNavigation('mainpage', ForterNavigationType.PRODUCT);
 forterSDK.trackAction(ForterActionType.ACCOUNT_LOGIN)
 ```
 
-### Register Forter Token updates:
+#### Register Forter Token updates:
 ```
 forterSDK.registerForterTokenListener(forterTokenUID => {
   //Forter token updated
@@ -126,7 +129,7 @@ forterSDK.registerForterTokenListener(forterTokenUID => {
 });
 ```
 
-### Get the latest Forter token:
+#### Get the latest Forter token:
 ```
 forterSDK.getForterToken(forterTokenUID => {
      console.warn('token: ' + forterTokenUID);
