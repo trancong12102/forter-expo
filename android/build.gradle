@@ -38,5 +38,5 @@ repositories {
 dependencies {
     implementation 'com.facebook.react:react-native:+'
     implementation 'androidx.annotation:annotation:1.7.0'
-    implementation 'com.forter.mobile:fortersdk:3.0.4'
+    implementation 'com.forter.mobile:fortersdk-releases:3.0.7'
 }
