@@ -55,7 +55,7 @@
  
  @param application The application as passed to [UIApplicationDelegate applicationDidBecomeActive:].
  */
-- (void)applicationDidBecomeActive:(UIApplication *)application;
+- (void)applicationDidBecomeActive:(UIApplication *)application __attribute__((deprecated("applicationDidBecomeActive is deprecated and will be removed in future versions.")));
 
 /**
  Call this method from the [UIApplicationDelegate applicationDidEnterBackground:] method
@@ -63,6 +63,7 @@
  
  @param application The application as passed to [UIApplicationDelegate applicationDidEnterBackground:].
  */
-- (void)applicationDidEnterBackground:(UIApplication *)application;
+
+- (void)applicationDidEnterBackground:(UIApplication *)application __attribute__((deprecated("applicationDidEnterBackground is deprecated and will be removed in future versions.")));
 
 @end

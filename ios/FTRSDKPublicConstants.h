@@ -8,12 +8,12 @@
 
 #pragma once
 
-#define FTR_SDK_VERSION_STRING_NAME @"3.0.3"
+#define FTR_SDK_VERSION_STRING_NAME @"3.1.0"
 #define FTR_SDK_VERSION_STRING_BUILD @"1"
-#define FTR_SDK_VERSION_SIGNATURE @"fb2c1fd139bdfb8b0b5bcbd67df6ba59"
+#define FTR_SDK_VERSION_SIGNATURE @"cdee73c61819cc60bbf5fa710769b717"
 #define FTR_SDK_UI_KIT_DEPENDENCY_ENABLED 1
 
-/**
+/** 
  Navigation type to be used when tracking navigation using [ForterSDK trackNavigation:withType:]
  */
 typedef NS_ENUM(NSUInteger, FTRSDKNavigationType) {
