@@ -82,7 +82,7 @@ public class MainApplication extends Application implements ReactApplication {
 Add the `ForterSDK` pod and the React Native pod to `ios/Podfile`:
 
 ```podspec
-pod 'ForterSDK', :git => 'https://bitbucket.org/forter-mobile/forter-ios-sdk.git'
+pod 'ForterSDK', :git => 'https://bitbucket.org/forter-mobile/forter-ios-releases.git'
 pod 'react-native-forter', :path => '../node_modules/react-native-forter'
 ```
 
