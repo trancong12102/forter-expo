@@ -79,10 +79,16 @@ public class MainApplication extends Application implements ReactApplication {
 
 ### Step 3: iOS setup
 
-Add the `ForterSDK` pod and the React Native pod to `ios/Podfile`:
+Add the following code to the **top** of your `ios/Podfile`:
 
 ```podspec
-pod 'ForterSDK', :git => 'https://bitbucket.org/forter-mobile/forter-ios-releases.git'
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://bitbucket.org/forter-mobile/forter-ios-specs'
+```
+
+Add Forter react plugin pod to `ios/Podfile`:
+
+```podspec
 pod 'react-native-forter', :path => '../node_modules/react-native-forter'
 ```
 
