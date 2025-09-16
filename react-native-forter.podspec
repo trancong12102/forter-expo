@@ -13,6 +13,6 @@ Pod::Spec.new do |s|
   s.source_files = 'ios/**/*.{h,m,mm}'
   s.platform     = :ios, '10.0'
 
-  s.dependency 'ForterSDK', '~> 3.1.2'
+  s.dependency 'ForterSDK', '~> 3.1.5'
   s.dependency 'React-Core'
 end
