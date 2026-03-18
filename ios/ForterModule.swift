@@ -68,7 +68,7 @@ public class ForterModule: Module {
 
     OnStopObserving {
       if let listener = self.tokenListener {
-        ForterSDK.unregister(listener)
+        ForterSDK.unregisterForterTokenListener(listener)
       }
     }
   }
