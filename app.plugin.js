@@ -5,6 +5,7 @@ const {
 const fs = require('fs');
 const path = require('path');
 
+const COCOAPODS_CDN_SOURCE = "source 'https://cdn.cocoapods.org/'";
 const FORTER_POD_SOURCE =
   "source 'https://bitbucket.org/forter-mobile/forter-ios-specs'";
 
@@ -19,7 +20,12 @@ function withForterIOS(config) {
       let podfileContents = fs.readFileSync(podfilePath, 'utf8');
 
       if (!podfileContents.includes(FORTER_POD_SOURCE)) {
-        podfileContents = FORTER_POD_SOURCE + '\n' + podfileContents;
+        // Adding an explicit source disables the default CocoaPods CDN.
+        // Prepend the CDN source so other pods continue to resolve.
+        const cdnLine = podfileContents.includes(COCOAPODS_CDN_SOURCE)
+          ? ''
+          : COCOAPODS_CDN_SOURCE + '\n';
+        podfileContents = cdnLine + FORTER_POD_SOURCE + '\n' + podfileContents;
       }
 
       fs.writeFileSync(podfilePath, podfileContents);
