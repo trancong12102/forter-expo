@@ -1,145 +1,132 @@
-# ForterSDK React Native Wrapper
+# forter-expo
 
-This wrapper simplifies the initialization and integration of Forter's SDK for **React Native** applications, supporting both **iOS** and **Android** platforms.
+Expo Module for the Forter Mobile SDK, supporting **iOS** and **Android**.
 
-## Supported Platforms
+Requires **Expo SDK 51+** (New Architecture only).
 
-- Forter iOS SDK
-- Forter Android SDK
+## Installation
 
----
+### Step 1: Install the package
 
-## 📦 Installation
+```bash
+npm install forter-expo
+```
 
-### Step 1: Add to `package.json`
+### Step 2: Add the config plugin
+
+In your `app.json` (or `app.config.js`):
 
 ```json
 {
-  "dependencies": {
-    "react-native-forter": "git+https://bitbucket.org/forter-mobile/forter-react-plugin.git"
+  "expo": {
+    "plugins": ["forter-expo"]
   }
 }
 ```
 
-If you are running ReactNative < 0.60 (this should work for 0.60 and above), you must also have the React dependencies defined in the Podfile as described [here](https://facebook.github.io/react-native/docs/next/troubleshooting.html#missing-libraries-for-react).
+This automatically configures:
+- **iOS**: Adds Forter's private CocoaPods spec source to the Podfile
+- **Android**: Adds Forter's private Maven repository to the project
 
-And finally execute `pod install` (inside `ios` directory).
+### Step 3: Rebuild
 
-### Step 2: Android 
-
-#### modify `android/settings.gradle`:
-
-```gradle
-include ':react-native-forter'
-project(':react-native-forter').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-forter/android')
+```bash
+npx expo prebuild --clean
+npx expo run:ios
+npx expo run:android
 ```
 
-#### Add Forter's private Maven repository to your `android/app/build.gradle` or `settings.gradle` if you are using central declaration of repositories:
+## Usage
 
-``` gradle
-repositories {
-  maven {
-    url "https://mobile-sdks.forter.com/android"
-    credentials {
-      username "forter-android-sdk"
-      password "HvYumAfjVQYQFyoGsmNAefGdR84Esqig"
-    }
-  }
-}
-```
+```typescript
+import {
+  init,
+  getForterToken,
+  getDeviceUniqueID,
+  setDevLogsEnabled,
+  trackNavigation,
+  trackAction,
+  addForterTokenListener,
+  ForterNavigationType,
+  ForterActionType,
+} from 'forter-expo';
 
-#### Add the project to your dependencies\
-```gradle
-dependencies {
-   ...
-   implementation project(':react-native-forter')
-}
-```
+// Enable dev logs (optional)
+setDevLogsEnabled();
 
-#### if Autolink is disabled add the following code to your Application to register Forter's module
+// Initialize the SDK
+const deviceId = await getDeviceUniqueID();
+await init('YOUR_SITE_ID', deviceId);
 
-```java
-import com.forter.mobile.reactnative.RNForterPackage;
+// Track navigation and actions
+trackNavigation('mainpage', ForterNavigationType.PRODUCT);
+trackAction(ForterActionType.ACCOUNT_LOGIN);
 
-public class MainApplication extends Application implements ReactApplication {
+// Get the current Forter token
+const token = await getForterToken();
+console.log('Forter token:', token);
 
-        ... 
-        
-        @Override
-        protected List<ReactPackage> getPackages() {
-          @SuppressWarnings("UnnecessaryLocalVariable")
-          List<ReactPackage> packages = new PackageList(this).getPackages();
-          
-          packages.add(new RNForterPackage(MainApplication.this));
-          return packages;
-        }
-        
-        ...
-```
-
-### Step 3: iOS setup
-
-Add the following code to the **top** of your `ios/Podfile`:
-
-```podspec
-source 'https://github.com/CocoaPods/Specs.git'
-source 'https://bitbucket.org/forter-mobile/forter-ios-specs'
-```
-
-Add Forter react plugin pod to `ios/Podfile`:
-
-```podspec
-pod 'react-native-forter', :path => '../node_modules/react-native-forter'
-```
-
-
-### Step 4: JavaScript setup
-
-Add the following code to your apps `index.js`, this example
-uses `react-native-logger`, which is optional. To use it, add
-the following line to `package.json` : `{"react-native-logger": "1.0.3"}` and then execute `yarn install`.
-
-``` javascript
-import {logger} from 'react-native-logger';
-import {forterSDK, ForterActionType, ForterNavigationType} from 'react-native-forter';
-
-AppRegistry.registerComponent(appName, () => App);
-
-// Modify this with your merchant ID
-var myForterID = "1234556789" 
-
-forterSDK.setDevLogsEnabled();
-forterSDK.getDeviceUniqueID( (deviceID) => {
-    console.warn("deviceID = " + deviceID + " merchange=" + myForterID);
-    forterSDK.init(myForterID, deviceID, (successResult) => {
-        console.warn("OK: " + successResult);
-    }, (errorResult) => {
-        console.warn("FAIL: " + errorResult);
-    });
+// Listen for token updates
+const subscription = addForterTokenListener((token) => {
+  console.log('Token updated:', token);
 });
 
-// Exaples for custom tracking
-forterSDK.trackNavigation('mainpage', ForterNavigationType.PRODUCT);
-forterSDK.trackAction(ForterActionType.ACCOUNT_LOGIN)
-
-// Examples for custom tracking
-forterSDK.trackNavigation('mainpage', ForterNavigationType.PRODUCT);
-forterSDK.trackAction(ForterActionType.ACCOUNT_LOGIN)
+// Remove listener when done
+subscription.remove();
 ```
 
-#### Register Forter Token updates:
-```
-forterSDK.registerForterTokenListener(forterTokenUID => {
-  //Forter token updated
-  console.warn('token: ' + forterTokenUID);
-});
+## API
+
+### Async methods
+
+| Method | Returns |
+|---|---|
+| `init(siteId, mobileUid)` | `Promise<void>` |
+| `getForterToken()` | `Promise<string>` |
+| `getDeviceUniqueID()` | `Promise<string>` |
+
+### Sync methods
+
+| Method | Returns |
+|---|---|
+| `getSDKVersionSignature()` | `string` |
+| `setAccountIdentifier(accountUid, accountType)` | `void` |
+| `trackNavigation(screenName, navigationType)` | `void` |
+| `trackNavigationWithExtraData(screenName, navigationType, itemId, itemCategory, otherInfo)` | `void` |
+| `trackAction(actionType)` | `void` |
+| `trackActionWithMessage(actionType, message)` | `void` |
+| `trackActionWithJSON(actionType, dictionary)` | `void` |
+| `trackCurrentLocation(longitude, latitude)` | `void` |
+| `setDevLogsEnabled()` | `void` |
+
+### Events
+
+| Method | Returns |
+|---|---|
+| `addForterTokenListener(callback)` | `Subscription` |
+
+### Enums
+
+- `ForterNavigationType`: `PRODUCT`, `ACCOUNT`, `SEARCH`, `CHECKOUT`, `CART`, `HELP`, `APP`
+- `ForterActionType`: `TAP`, `CLIPBOARD`, `TYPING`, `ADD_TO_CART`, `REMOVE_FROM_CART`, `ACCEPTED_PROMOTION`, `ACCEPTED_TOS`, `ACCOUNT_LOGIN`, `ACCOUNT_LOGOUT`, `ACCOUNT_ID_ADDED`, `PAYMENT_INFO`, `SHARE`, `CONFIGURATION_UPDATE`, `APP_ACTIVE`, `APP_PAUSE`, `RATE`, `IS_JAILBROKEN`, `SEARCH_QUERY`, `REFERRER`, `WEBVIEW_TOKEN`, `OTHER`
+- `ForterAccountType`: `MERCHANT`, `FACEBOOK`, `GOOGLE`, `TWITTER`, `APPLE_IDFA`, `OTHER`
+
+## Migration from v1.x
+
+v2.0 is a breaking change — callbacks are replaced with Promises:
+
+```typescript
+// Before (v1.x)
+forterSDK.init(siteId, uid, successCb, errorCb);
+forterSDK.getForterToken(successCb, errorCb);
+forterSDK.getDeviceUniqueID(callback);
+forterSDK.registerForterTokenListener(callback);
+
+// After (v2.0)
+await init(siteId, uid);
+const token = await getForterToken();
+const deviceId = await getDeviceUniqueID();
+const subscription = addForterTokenListener(callback);
 ```
 
-#### Get the latest Forter token:
-```
-forterSDK.getForterToken(forterTokenUID => {
-     console.warn('token: ' + forterTokenUID);
-   },
-   error => {},
-);
-```
+Manual native setup (Podfile sources, Maven repos, `RNForterPackage` registration) is no longer needed — the config plugin handles everything.

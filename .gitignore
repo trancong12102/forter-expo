@@ -1,3 +1,5 @@
 /ios/Podfile
 /ios/Podfile.lock
 /ios/Pods/
+/build/
+node_modules/

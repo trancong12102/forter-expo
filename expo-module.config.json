@@ -1,0 +1,9 @@
+{
+  "platforms": ["ios", "android"],
+  "ios": {
+    "modules": ["ForterModule"]
+  },
+  "android": {
+    "modules": ["com.forter.mobile.expo.ForterModule"]
+  }
+}

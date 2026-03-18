@@ -10,9 +10,11 @@ Pod::Spec.new do |s|
   s.homepage     = pkg["homepage"]
   s.author       = pkg["author"]
   s.source       = { :git => pkg["repository"]["url"] }
-  s.source_files = 'ios/**/*.{h,m,mm}'
-  s.platform     = :ios, '10.0'
+  s.source_files = 'ios/**/*.swift'
+  s.platform     = :ios, '16.0'
 
+  s.dependency 'ExpoModulesCore'
   s.dependency 'ForterSDK', '~> 3.1.5'
-  s.dependency 'React-Core'
+
+  s.swift_version = '5.0'
 end
