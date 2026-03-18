@@ -10,7 +10,7 @@ public class ForterModule: Module {
 
     Events("onForterTokenUpdate")
 
-    AsyncFunction("init") { (siteId: String, mobileUid: String) in
+    AsyncFunction("init") { (siteId: String, mobileUid: String) -> Void in
       guard !self.isInitialized else { return }
 
       guard !siteId.isEmpty else {
@@ -32,7 +32,8 @@ public class ForterModule: Module {
     }
 
     AsyncFunction("getForterToken") { () -> String in
-      return try ForterSDK.getForterToken()
+      let token: String = try ForterSDK.getForterToken()
+      return token
     }
 
     AsyncFunction("getDeviceUniqueID") { () -> String in
@@ -43,41 +44,41 @@ public class ForterModule: Module {
       return ForterSDK.getSDKVersionSignature()
     }
 
-    Function("setAccountIdentifier") { (accountUid: String, accountType: String) in
+    Function("setAccountIdentifier") { (accountUid: String, accountType: String) -> Void in
       let sdkAccountType = Self.getMatchingAccountType(accountType)
       ForterSDK.sharedInstance().setAccountIdentifier(accountUid, with: sdkAccountType)
     }
 
-    Function("trackNavigation") { (screenName: String, navigationType: String) in
+    Function("trackNavigation") { (screenName: String, navigationType: String) -> Void in
       let sdkNavigationType = Self.getMatchingNavigationType(navigationType)
       ForterSDK.sharedInstance().trackNavigation(screenName, with: sdkNavigationType)
     }
 
-    Function("trackNavigationWithExtraData") { (screenName: String, navigationType: String, itemId: String, itemCategory: String, otherInfo: String) in
+    Function("trackNavigationWithExtraData") { (screenName: String, navigationType: String, itemId: String, itemCategory: String, otherInfo: String) -> Void in
       let sdkNavigationType = Self.getMatchingNavigationType(navigationType)
       ForterSDK.sharedInstance().trackNavigation(screenName, with: sdkNavigationType, pageId: itemId, pageCategory: itemCategory, otherInfo: otherInfo)
     }
 
-    Function("trackAction") { (actionType: String) in
+    Function("trackAction") { (actionType: String) -> Void in
       let sdkActionType = Self.getMatchingActionType(actionType)
       ForterSDK.sharedInstance().trackAction(sdkActionType)
     }
 
-    Function("trackActionWithMessage") { (actionType: String, message: String) in
+    Function("trackActionWithMessage") { (actionType: String, message: String) -> Void in
       let sdkActionType = Self.getMatchingActionType(actionType)
       ForterSDK.sharedInstance().trackAction(sdkActionType, withMessage: message)
     }
 
-    Function("trackActionWithJSON") { (actionType: String, json: [String: Any]) in
+    Function("trackActionWithJSON") { (actionType: String, json: [String: Any]) -> Void in
       let sdkActionType = Self.getMatchingActionType(actionType)
       ForterSDK.sharedInstance().trackAction(sdkActionType, withData: json)
     }
 
-    Function("trackCurrentLocation") { (longitude: Float, latitude: Float) in
+    Function("trackCurrentLocation") { (longitude: Float, latitude: Float) -> Void in
       ForterSDK.sharedInstance().didUpdateLocationLatitude(latitude, longitude: longitude, altitude: 0.0)
     }
 
-    Function("setDevLogsEnabled") { () in
+    Function("setDevLogsEnabled") { () -> Void in
       ForterSDK.setDevLogsEnabled(true)
     }
 
