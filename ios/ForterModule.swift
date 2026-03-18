@@ -23,7 +23,7 @@ public class ForterModule: Module {
     }
 
     Function("getSDKVersionSignature") { () -> String in
-      return ForterSDK.getSDKVersionSignature()
+      return ForterSDK.getVersionSignature()
     }
 
     Function("setAccountIdentifier") { (accountUid: String, accountType: String) -> Void in
@@ -68,7 +68,7 @@ public class ForterModule: Module {
 
     OnStopObserving {
       if let listener = self.tokenListener {
-        ForterSDK.unregisterForterTokenListener(listener)
+        ForterSDK.unregister(listener)
       }
     }
   }
@@ -90,7 +90,7 @@ public class ForterModule: Module {
         "forterMobileUID": forterMobileUid
       ])
     }
-    ForterSDK.registerForterTokenListener(tokenListener!)
+    ForterSDK.register(tokenListener!)
     ForterSDK.setup(withDeviceUid: mobileUid, siteId: siteId)
     ForterSDK.sharedInstance().setDeviceUniqueIdentifier(mobileUid)
     isInitialized = true
