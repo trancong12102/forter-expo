@@ -56,7 +56,7 @@ public class ForterModule: Module {
       ForterSDK.sharedInstance().trackAction(sdkActionType, withData: json)
     }
 
-    Function("trackCurrentLocation") { (longitude: Float, latitude: Float) -> Void in
+    Function("trackCurrentLocation") { (longitude: Double, latitude: Double) -> Void in
       ForterSDK.sharedInstance().didUpdateLocationLatitude(latitude, longitude: longitude, altitude: 0.0)
     }
 
@@ -90,14 +90,17 @@ public class ForterModule: Module {
         "forterMobileUID": forterMobileUid
       ])
     }
-    ForterSDK.registerForterTokenListener(tokenListener)
+    ForterSDK.registerForterTokenListener(tokenListener!)
     ForterSDK.setup(withDeviceUid: mobileUid, siteId: siteId)
     ForterSDK.sharedInstance().setDeviceUniqueIdentifier(mobileUid)
     isInitialized = true
   }
 
   private func performGetForterToken() throws -> String {
-    return try ForterSDK.getForterToken()
+    var error: NSError?
+    let token = ForterSDK.getForterToken(&error)
+    if let error = error { throw error }
+    return token
   }
 
   private func performGetDeviceUniqueID() -> String {

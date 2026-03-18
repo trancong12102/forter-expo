@@ -1,6 +1,6 @@
 {
   "name": "forter-expo",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Expo Module for the Forter Mobile SDK",
   "main": "build/index.js",
   "types": "build/index.d.ts",
