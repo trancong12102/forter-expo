@@ -25,6 +25,7 @@ In your `app.json` (or `app.config.js`):
 ```
 
 This automatically configures:
+
 - **iOS**: Adds Forter's private CocoaPods spec source to the Podfile
 - **Android**: Adds Forter's private Maven repository to the project
 
@@ -79,30 +80,30 @@ subscription.remove();
 
 ### Async methods
 
-| Method | Returns |
-|---|---|
-| `init(siteId, mobileUid)` | `Promise<void>` |
-| `getForterToken()` | `Promise<string>` |
-| `getDeviceUniqueID()` | `Promise<string>` |
+| Method                    | Returns           |
+| ------------------------- | ----------------- |
+| `init(siteId, mobileUid)` | `Promise<void>`   |
+| `getForterToken()`        | `Promise<string>` |
+| `getDeviceUniqueID()`     | `Promise<string>` |
 
 ### Sync methods
 
-| Method | Returns |
-|---|---|
-| `getSDKVersionSignature()` | `string` |
-| `setAccountIdentifier(accountUid, accountType)` | `void` |
-| `trackNavigation(screenName, navigationType)` | `void` |
-| `trackNavigationWithExtraData(screenName, navigationType, itemId, itemCategory, otherInfo)` | `void` |
-| `trackAction(actionType)` | `void` |
-| `trackActionWithMessage(actionType, message)` | `void` |
-| `trackActionWithJSON(actionType, dictionary)` | `void` |
-| `trackCurrentLocation(longitude, latitude)` | `void` |
-| `setDevLogsEnabled()` | `void` |
+| Method                                                                                      | Returns  |
+| ------------------------------------------------------------------------------------------- | -------- |
+| `getSDKVersionSignature()`                                                                  | `string` |
+| `setAccountIdentifier(accountUid, accountType)`                                             | `void`   |
+| `trackNavigation(screenName, navigationType)`                                               | `void`   |
+| `trackNavigationWithExtraData(screenName, navigationType, itemId, itemCategory, otherInfo)` | `void`   |
+| `trackAction(actionType)`                                                                   | `void`   |
+| `trackActionWithMessage(actionType, message)`                                               | `void`   |
+| `trackActionWithJSON(actionType, dictionary)`                                               | `void`   |
+| `trackCurrentLocation(longitude, latitude)`                                                 | `void`   |
+| `setDevLogsEnabled()`                                                                       | `void`   |
 
 ### Events
 
-| Method | Returns |
-|---|---|
+| Method                             | Returns        |
+| ---------------------------------- | -------------- |
 | `addForterTokenListener(callback)` | `Subscription` |
 
 ### Enums
