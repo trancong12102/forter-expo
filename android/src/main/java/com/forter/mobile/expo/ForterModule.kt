@@ -11,6 +11,7 @@ import com.forter.mobile.fortersdk.integrationkit.ForterTokenListener
 import com.forter.mobile.fortersdk.models.ForterAccountIDType
 import com.forter.mobile.fortersdk.models.NavigationType
 import com.forter.mobile.fortersdk.models.TrackType
+import android.location.Location
 import org.json.JSONObject
 
 class ForterModule : Module() {
@@ -94,13 +95,12 @@ class ForterModule : Module() {
       sdk().trackAction(getMatchingActionType(actionType), data)
     }
 
-    Function("trackCurrentLocation") { longitude: Float, latitude: Float ->
-      val data = JSONObject().apply {
-        put("eventType", "locationUpdate")
-        put("latitude", latitude.toDouble())
-        put("longitude", longitude.toDouble())
+    Function("trackCurrentLocation") { longitude: Double, latitude: Double ->
+      val location = Location("forter").apply {
+        this.latitude = latitude
+        this.longitude = longitude
       }
-      sdk().trackAction(TrackType.OTHER, data)
+      sdk().onLocationChanged(location)
     }
 
     Function("setDevLogsEnabled") {
