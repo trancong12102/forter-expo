@@ -11,33 +11,15 @@ public class ForterModule: Module {
     Events("onForterTokenUpdate")
 
     AsyncFunction("init") { (siteId: String, mobileUid: String) -> Void in
-      guard !self.isInitialized else { return }
-
-      guard !siteId.isEmpty else {
-        throw NSError(domain: "ForterModule", code: 0, userInfo: [NSLocalizedDescriptionKey: "SiteID is empty or missing"])
-      }
-      guard !mobileUid.isEmpty else {
-        throw NSError(domain: "ForterModule", code: 1, userInfo: [NSLocalizedDescriptionKey: "MobileUID is empty or missing"])
-      }
-
-      self.tokenListener = ForterTokenListener { [weak self] forterMobileUid in
-        self?.sendEvent("onForterTokenUpdate", [
-          "forterMobileUID": forterMobileUid
-        ])
-      }
-      ForterSDK.registerForterTokenListener(self.tokenListener)
-      ForterSDK.setup(withDeviceUid: mobileUid, siteId: siteId)
-      ForterSDK.sharedInstance().setDeviceUniqueIdentifier(mobileUid)
-      self.isInitialized = true
+      try self.performInit(siteId: siteId, mobileUid: mobileUid)
     }
 
     AsyncFunction("getForterToken") { () -> String in
-      let token: String = try ForterSDK.getForterToken()
-      return token
+      return try self.performGetForterToken()
     }
 
     AsyncFunction("getDeviceUniqueID") { () -> String in
-      return UIDevice.current.identifierForVendor?.uuidString ?? ""
+      return self.performGetDeviceUniqueID()
     }
 
     Function("getSDKVersionSignature") { () -> String in
@@ -90,6 +72,39 @@ public class ForterModule: Module {
       }
     }
   }
+
+  // MARK: - Implementation helpers
+
+  private func performInit(siteId: String, mobileUid: String) throws {
+    guard !isInitialized else { return }
+
+    guard !siteId.isEmpty else {
+      throw NSError(domain: "ForterModule", code: 0, userInfo: [NSLocalizedDescriptionKey: "SiteID is empty or missing"])
+    }
+    guard !mobileUid.isEmpty else {
+      throw NSError(domain: "ForterModule", code: 1, userInfo: [NSLocalizedDescriptionKey: "MobileUID is empty or missing"])
+    }
+
+    tokenListener = ForterTokenListener { [weak self] forterMobileUid in
+      self?.sendEvent("onForterTokenUpdate", [
+        "forterMobileUID": forterMobileUid
+      ])
+    }
+    ForterSDK.registerForterTokenListener(tokenListener)
+    ForterSDK.setup(withDeviceUid: mobileUid, siteId: siteId)
+    ForterSDK.sharedInstance().setDeviceUniqueIdentifier(mobileUid)
+    isInitialized = true
+  }
+
+  private func performGetForterToken() throws -> String {
+    return try ForterSDK.getForterToken()
+  }
+
+  private func performGetDeviceUniqueID() -> String {
+    return UIDevice.current.identifierForVendor?.uuidString ?? ""
+  }
+
+  // MARK: - Type mapping
 
   private static func getMatchingActionType(_ value: String) -> FTRSDKActionType {
     switch value {
