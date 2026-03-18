@@ -30,7 +30,7 @@ class ForterModule : Module() {
 
       val app = appContext.reactContext?.applicationContext as Application
 
-      sdk().registerForterTokenListener(object : ForterTokenListener {
+      sdk().registerForterTokenListener(object : ForterTokenListener() {
         override fun onForterTokenUpdate(forterMobileUID: String) {
           this@ForterModule.sendEvent("onForterTokenUpdate", bundleOf(
             "forterMobileUID" to forterMobileUID
