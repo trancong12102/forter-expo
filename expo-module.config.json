@@ -1,7 +1,8 @@
 {
   "platforms": ["ios", "android"],
   "ios": {
-    "modules": ["ForterModule"]
+    "modules": ["ForterModule"],
+    "podspecPath": "./forter-expo.podspec"
   },
   "android": {
     "modules": ["com.forter.mobile.expo.ForterModule"]
